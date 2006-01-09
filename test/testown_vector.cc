@@ -1,6 +1,7 @@
-// $Id: testown_vector.cc,v 1.1 2005/12/13 03:38:06 llista Exp $
+// $Id: testown_vector.cc,v 1.1 2006/01/03 13:46:49 llista Exp $
 #include <cppunit/extensions/HelperMacros.h>
 #include "DataFormats/Common/interface/own_vector.h"
+#include <algorithm>
 
 class testown_vector : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(testown_vector);
@@ -22,6 +23,12 @@ namespace test {
   private:
     bool * ref;
   };
+
+  struct DummyComp {
+    bool operator()( const Dummy& d1, const Dummy& d2 ) {
+      return d1.value < d2.value;
+    } 
+  };
 }
 
 void testown_vector::checkAll() {
@@ -33,6 +40,11 @@ void testown_vector::checkAll() {
   v.push_back( new test::Dummy( 1, deleted + 1 ) );
   v.push_back( new test::Dummy( 2, deleted + 2 ) );
   CPPUNIT_ASSERT( v.size() == 3 );
+  own_vector<test::Dummy>::iterator i;
+  i = v.begin();
+  own_vector<test::Dummy>::const_iterator ci = i;
+  * ci;
+  std::sort( v.begin(), v.end(), test::DummyComp() );
   CPPUNIT_ASSERT( ! v.empty() );
   CPPUNIT_ASSERT( v[ 0 ].value == 0 );
   CPPUNIT_ASSERT( v[ 1 ].value == 1 );
