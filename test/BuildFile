@@ -1,7 +1,8 @@
-<bin name="testDataFormatsCommon" file="testown_vector.cc,testRunner.cpp ">
+<bin name="testDataFormatsCommon" file="testown_vector.cc,testSortedCollection.cc,testRunner.cpp ">
  <use name=cppunit>
 </bin>
 
 <bin name="testDataFormats_Associated" file="test_Associated.cpp">
   <use name=FWCore/EDProduct>
 </bin>
+
