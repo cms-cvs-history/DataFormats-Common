@@ -1,3 +1,6 @@
 <bin name="testDataFormatsCommon" file="testown_vector.cc,testRunner.cpp ">
  <use name=cppunit>
 </bin>
+
+<bin name="testDataFormats_Associated" file="test_Associaded.cpp">
+</bin>
