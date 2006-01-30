@@ -2,5 +2,6 @@
  <use name=cppunit>
 </bin>
 
-<bin name="testDataFormats_Associated" file="test_Associaded.cpp">
+<bin name="testDataFormats_Associated" file="test_Associated.cpp">
+  <use name=FWCore/EDProduct>
 </bin>
