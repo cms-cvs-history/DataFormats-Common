@@ -1,4 +1,4 @@
-<bin name="testDataFormatsCommon" file="testown_vector.cc,testSortedCollection.cc,testRunner.cpp ">
+<bin name="testDataFormatsCommon" file="testOwnVector.cc,testSortedCollection.cc,testRunner.cpp ">
  <use name=cppunit>
 </bin>
 

@@ -21,13 +21,13 @@ private:
   AAAsRef aaas_;
 };
 
-typedef ext_collection<std::vector<BBB>, BBBRefProds> BBBCollection;
+typedef edm::ExtCollection<std::vector<BBB>, BBBRefProds> BBBCollection;
 typedef edm::Ref<BBBCollection> BBBRef;
 
 
 void testRef() {
   const BBBRef bbbRef;
-  const AAA & aaa = Associated<AAACollection>::get( bbbRef, & BBBRefProds::aaas );
+  const AAA & aaa = edm::Associated<AAACollection>::get( bbbRef, & BBBRefProds::aaas );
   aaa.xxx();
 }
 
