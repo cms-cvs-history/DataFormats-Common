@@ -1,8 +1,14 @@
-<bin name="testDataFormatsCommon" file="testOwnVector.cc,testSortedCollection.cc,testRunner.cpp ">
- <use name=cppunit>
+<use name=boost>
+<use name=cppunit>
+<use name=DataFormats/Common>
+
+<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testSortedCollection.cc,eventid_t.cppunit.cc,timestamp_t.cppunit.cc,parametersetid_t.cppunit.cc,ref_t.cppunit.cc>
 </bin>
 
 <bin name="testDataFormats_Associated" file="test_Associated.cpp">
-  <use name=FWCore/EDProduct>
 </bin>
+
+<bin file=DetSetVector_t.cpp>
+</bin>
+
 
