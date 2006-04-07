@@ -2,7 +2,7 @@
 <use name=cppunit>
 <use name=DataFormats/Common>
 
-<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToManyAssociation.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,eventid_t.cppunit.cc,timestamp_t.cppunit.cc,parametersetid_t.cppunit.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc >
+<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToOneAssociation.cc,testOneToManyAssociation.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,eventid_t.cppunit.cc,timestamp_t.cppunit.cc,parametersetid_t.cppunit.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc >
 </bin>
 
 <bin name="testDataFormats_Associated" file="test_Associated.cpp">
