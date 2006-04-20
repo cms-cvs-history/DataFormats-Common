@@ -6,7 +6,7 @@
  * 
  * \author Luca Lista, INFN
  *
- * $Id: OneToManyAssociation.h,v 1.9 2006/04/20 10:22:31 llista Exp $
+ * $Id: OneToManyAssociation.h,v 1.6 2006/03/29 12:50:47 llista Exp $
  *
  */
 #include "DataFormats/Common/interface/RefProd.h"
@@ -36,7 +36,7 @@ namespace edm {
     /// default constructor
     OneToManyAssociation() { }
     /// constructor from product references
-    OneToManyAssociation( const KeyRefProd & k, const ValRefProd & v ) :
+    OneToManyAssociation( const KeyRef & k, const ValRef & v ) :
       keyRef_( k ), valRef_( v ) {
     }
     /// map size
@@ -45,13 +45,6 @@ namespace edm {
     bool empty() const { return map_.empty(); }
     /// insert an association
     void insert( const KeyRef & k, const ValRef & v ) {
-      if ( k.isNull() || v.isNull() )
-	throw edm::Exception( edm::errors::InvalidReference )
-	  << "can't insert null references in OneToOneAssociation";
-      if ( keyRef_.isNull() ) {
-	keyRef_ = KeyRefProd( k ); 
-	valRef_ = ValRefProd( v );
-      }
       checkKey( k ); checkVal( v );
       index ik = index( k.index() ), iv = index( v.index() );
       map_[ ik ].push_back( iv );
@@ -70,21 +63,13 @@ namespace edm {
       typedef ptrdiff_t difference_type;
       typedef typename map_type::const_iterator::iterator_category iterator_category;
       const_iterator() { }
-      const_iterator( const KeyRefProd & keyRef, const ValRefProd & valRef,
-		      typename map_type::const_iterator mi ) : 
-	keyRef_( keyRef ), valRef_( valRef ), i( mi ) { }
-      const_iterator & operator=( const const_iterator & it ) { 
-	keyRef_ = it.keyRef_; valRef_ = it.valRef_;
-	i = it.i; 
-	return *this; 
-      }
+      const_iterator( typename map_type::const_iterator mi ) : i ( mi ) { }
+      const_iterator & operator=( const const_iterator & it ) { i = it.i; return *this; }
       const_iterator& operator++() { ++i; return *this; }
       const_iterator operator++( int ) { const_iterator ci = *this; ++i; return ci; }
       const_iterator& operator--() { --i; return *this; }
       const_iterator operator--( int ) { const_iterator ci = *this; --i; return ci; }
-      bool operator==( const const_iterator& ci ) const { 
-	return keyRef_ == ci.keyRef_ && valRef_ == ci.valRef_ && i == ci.i; 
-      }
+      bool operator==( const const_iterator& ci ) const { return i == ci.i; }
       bool operator!=( const const_iterator& ci ) const { return i != ci.i; }
       KeyRef key() const { return KeyRef( keyRef_, i->first ); }
       ValRefVec values() const {
@@ -98,28 +83,26 @@ namespace edm {
 	return keyVal( key(), values() );
       }
     private:
-      KeyRefProd keyRef_;
-      ValRefProd valRef_;
       typename map_type::const_iterator i;
     };
 
     /// first iterator over the map (read only)
-    const_iterator begin() const { return const_iterator( keyRef_, valRef_, map_.begin() );  }
+    const_iterator begin() const { return const_iterator( map_.begin() );  }
     /// last iterator over the map (read only)
-    const_iterator end() const { return const_iterator( keyRef_, valRef_, map_.end() );  }
+    const_iterator end() const { return const_iterator( map_.end() );  }
     /// find an entry in the map
     const_iterator find( const KeyRef & k ) const {
       checkKey( k );
       typename map_type::const_iterator f = map_.find( k.index() );
-      return const_iterator( keyRef_, valRef_, f );
+      return const_iterator( f );
     }
     /// return element with key i
     keyVal operator[]( size_type i ) const {
       typename map_type::const_iterator f = map_.find( k.index() );
       if ( f == map_.end() ) 
 	throw edm::Exception( edm::errors::InvalidReference )
-	  << "can't find reference in OneToManyAssociation at position " << i;
-      const_iterator ci( keyRef_, valRef_, f );
+	  << "can't find reference in OneToManyAssociation at position " << i << endl;
+      const_iterator ci( f );
       return * ci;
     } 
 
