@@ -6,7 +6,7 @@
 BranchDescription: The full description of a product and how it came into
 existence.
 
-$Id: BranchDescription.h,v 1.3 2006/03/05 00:25:18 wmtan Exp $
+$Id: BranchDescription.h,v 1.7 2006/05/05 01:00:39 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <string>
@@ -33,6 +33,7 @@ namespace edm {
 			       std::string const& name, 
 			       std::string const& fName, 
 			       std::string const& pin, 
+			       std::string const& alias, 
 			       boost::shared_ptr<EDProduct const> edp);
 
     ~BranchDescription() {}
@@ -51,6 +52,9 @@ namespace edm {
     // that are produced by the same producer
     std::string productInstanceName_;
 
+    // The branch ROOT alias , which is settable by the user.
+    mutable std::string branchAlias_;
+
     // A pointer to a default constructed Wrapper<T>, where T is the
     // product type.  If T is a user-defined class, the Wrapper
     // contains a null T*.
@@ -68,13 +72,19 @@ namespace edm {
 
     bool operator==(BranchDescription const& rh) const;
 
-    std::string branchName() const {return branchName_;}
-    std::string className() const {return fullClassName_;}
-    std::string moduleLabel() const {return module.moduleLabel_;}
-    std::string moduleName() const {return module.moduleName_;}
-    std::string processName() const {return module.processName_;}
-    std::string productInstanceName() const {return productInstanceName_;} 
-    std::string productType() const {return friendlyClassName_;}
+    std::string const& branchName() const {return branchName_;}
+    std::string const& className() const {return fullClassName_;}
+    std::string const& moduleLabel() const {return module.moduleLabel_;}
+    std::string const& moduleName() const {return module.moduleName_;}
+    PassID passID() const {return module.pass;}
+    std::string const& processName() const {return module.processName_;}
+    ProductID productID() const {return productID_;}
+    std::string const& productInstanceName() const {return productInstanceName_;} 
+    std::string const& productType() const {return friendlyClassName_;}
+    ParameterSetID const& psetID() const {return module.pid;}
+    VersionNumber versionNumber() const {return module.versionNumber_;}
+
+    std::string branchAlias() const {return branchAlias_;}
   };
   
   inline
