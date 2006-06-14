@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
   
-$Id: TestHandle.h,v 1.1 2005/12/01 22:10:51 wmtan Exp $
+$Id: TestHandle.h,v 1.1 2006/02/07 07:01:52 wmtan Exp $
 
 Version of Handle 
 
@@ -12,9 +12,6 @@ Version of Handle
 #include <algorithm>
 #include <stdexcept>
 #include <typeinfo>
-
-#include "boost/utility/enable_if.hpp"
-#include "boost/type_traits.hpp"
 
 #include "DataFormats/Common/interface/ProductID.h"
 #include "FWCore/Utilities/interface/EDMException.h"
