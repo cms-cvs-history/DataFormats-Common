@@ -44,8 +44,11 @@ namespace edm {
     ProductID productID() const {return product.productID();}
     std::string const& productInstanceName() const {return product.productInstanceName();}
     std::string const& productType() const {return product.productType();}
+    std::set<ParameterSetID> const& psetIDs() const {return product.psetIDs();}
     ParameterSetID const& psetID() const {return product.psetID();}
     VersionNumber versionNumber() const {return product.versionNumber();}
+    std::set<std::string> branchAliases() const {return product.branchAliases();}
+    Hash<ModuleDescription> moduleHash() const {return event.moduleHash();}
 
     ConditionsID const& conditionsID() const {return event.cid;}
     BranchEntryDescription::CreatorStatus const& creatorStatus() const {return event.status;}
@@ -60,5 +63,8 @@ namespace edm {
     p.write(os);
     return os;
   }
+
+  bool operator==(Provenance const& a, Provenance const& b);
+
 }
 #endif

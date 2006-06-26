@@ -6,13 +6,15 @@
 BranchEntryDescription: The event dependent portion of the description of a product
 and how it came into existence.
 
-$Id: BranchEntryDescription.h,v 1.4 2006/02/07 07:51:41 wmtan Exp $
+$Id: BranchEntryDescription.h,v 1.1 2006/02/08 00:44:23 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <vector>
 
 #include "DataFormats/Common/interface/ConditionsID.h"
 #include "DataFormats/Common/interface/ProductID.h"
+#include "DataFormats/Common/interface/Hash.h"
+#include "DataFormats/Common/interface/ModuleDescription.h"
 
 /*
   BranchEntryDescription
@@ -56,9 +58,21 @@ namespace edm {
     // create the output it promised?
     CreatorStatus status;
 
-    bool operator==(BranchEntryDescription const& rh) const;
+    Hash<ModuleDescription> moduleDescriptionHash_; 
+
+    // transient.  Filled in from the hash when needed.
+    mutable ModuleDescription module_;
+
+    void init() const;
 
     void write(std::ostream& os) const;
+
+    std::string const& moduleName() const {init(); return module_.moduleName_;}
+    PassID const& passID() const {init(); return module_.pass;}
+    ParameterSetID const& psetID() const {init(); return module_.pid;}
+    VersionNumber const& versionNumber() const {init(); return module_.versionNumber_;}
+
+    Hash<ModuleDescription> const& moduleHash() const {return moduleDescriptionHash_;}
   };
   
   inline
@@ -67,5 +81,7 @@ namespace edm {
     p.write(os);
     return os;
   }
+
+  bool operator==(BranchEntryDescription const& a, BranchEntryDescription const& b);
 }
 #endif

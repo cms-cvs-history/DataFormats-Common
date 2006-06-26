@@ -4,24 +4,47 @@
 #include "DataFormats/Common/interface/ProcessNameList.h"
 #include "DataFormats/Common/interface/EventID.h"
 #include "DataFormats/Common/interface/Timestamp.h"
+#include "DataFormats/Common/interface/LuminosityBlockID.h"
+#include "DataFormats/Common/interface/Hash.h"
 
-// Auxiliary event data that is persistent
+// Aux2iliary event data that is persistent
 
 namespace edm
 {
   struct EventAux {
-    EventAux() : process_history_(), id_() {}
+    EventAux() :
+	processHistoryHash_(),
+	processHistory_(),
+	id_(),
+	time_(),
+	luminosityBlockID_() {}
     //FIXME: keep temporarily for backwards compatibility
-    explicit EventAux(EventID const& id) : process_history_(), id_(id) {}
-    EventAux(EventID id, Timestamp const& time) : process_history_(), id_(id), time_(time) {}
+    explicit EventAux(EventID const& id) :
+	processHistoryHash_(),
+	processHistory_(),
+	id_(id),
+	time_(),
+	luminosityBlockID_() {}
+    EventAux(EventID id, Timestamp const& time, LuminosityBlockID lb) :
+	processHistoryHash_(),
+	processHistory_(),
+	id_(id),
+	time_(time),
+	luminosityBlockID_(lb) {}
     ~EventAux() {}
+    void init() const;
+    ProcessNameList& processHistory() const {init(); return processHistory_;}
     // most recently process that processed this event
     // is the last on the list, this defines what "latest" is
-    ProcessNameList process_history_;
+    mutable Hash<ProcessNameList> processHistoryHash_;
+    // Transient
+    mutable ProcessNameList processHistory_;
     // Event ID
     EventID id_;
     // Time from DAQ
     Timestamp time_;
+    // Associated Luminosity Block identifier.
+    LuminosityBlockID luminosityBlockID_;
   };
 }
 
