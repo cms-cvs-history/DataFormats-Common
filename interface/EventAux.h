@@ -34,6 +34,8 @@ namespace edm
     ~EventAux() {}
     void init() const;
     ProcessNameList& processHistory() const {init(); return processHistory_;}
+    EventID const& id() const {return id_;}
+    EventID const& time() const {return time_;}
     // most recently process that processed this event
     // is the last on the list, this defines what "latest" is
     mutable Hash<ProcessNameList> processHistoryHash_;
