@@ -6,7 +6,7 @@
 Provenance: The full description of a product and how it came into
 existence.
 
-$Id: Provenance.h,v 1.4 2006/04/26 19:48:36 wmtan Exp $
+$Id: Provenance.h,v 1.5.2.3 2006/06/27 02:17:49 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 
@@ -38,15 +38,15 @@ namespace edm {
     std::string const& branchName() const {return product.branchName();}
     std::string const& className() const {return product.className();}
     std::string const& moduleLabel() const {return product.moduleLabel();}
-    std::string const& moduleName() const {return product.moduleName();}
-    PassID passID() const {return product.passID();}
+    std::string const& moduleName() const {return event.moduleName();}
+    PassID passID() const {return event.passID();}
     std::string const& processName() const {return product.processName();}
     ProductID productID() const {return product.productID();}
     std::string const& productInstanceName() const {return product.productInstanceName();}
     std::string const& productType() const {return product.productType();}
     std::set<ParameterSetID> const& psetIDs() const {return product.psetIDs();}
-    ParameterSetID const& psetID() const {return product.psetID();}
-    VersionNumber versionNumber() const {return product.versionNumber();}
+    ParameterSetID const& psetID() const {return event.psetID();}
+    VersionNumber versionNumber() const {return event.versionNumber();}
     std::set<std::string> branchAliases() const {return product.branchAliases();}
     Hash<ModuleDescription> moduleHash() const {return event.moduleHash();}
 
