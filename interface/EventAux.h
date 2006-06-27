@@ -2,10 +2,10 @@
 #define Common_EventAux_h
 
 #include "DataFormats/Common/interface/ProcessNameList.h"
+#include "DataFormats/Common/interface/ProcessNameListID.h"
 #include "DataFormats/Common/interface/EventID.h"
 #include "DataFormats/Common/interface/Timestamp.h"
 #include "DataFormats/Common/interface/LuminosityBlockID.h"
-#include "DataFormats/Common/interface/Hash.h"
 
 // Aux2iliary event data that is persistent
 
@@ -13,20 +13,20 @@ namespace edm
 {
   struct EventAux {
     EventAux() :
-	processHistoryHash_(),
+	processHistoryID_(),
 	processHistory_(),
 	id_(),
 	time_(),
 	luminosityBlockID_() {}
     //FIXME: keep temporarily for backwards compatibility
     explicit EventAux(EventID const& id) :
-	processHistoryHash_(),
+	processHistoryID_(),
 	processHistory_(),
 	id_(id),
 	time_(),
 	luminosityBlockID_() {}
     EventAux(EventID id, Timestamp const& time, LuminosityBlockID lb) :
-	processHistoryHash_(),
+	processHistoryID_(),
 	processHistory_(),
 	id_(id),
 	time_(time),
@@ -39,7 +39,7 @@ namespace edm
     LuminosityBlockID const& luminosityBlockID() const {return luminosityBlockID_;}
     // most recently process that processed this event
     // is the last on the list, this defines what "latest" is
-    mutable Hash<ProcessNameList> processHistoryHash_;
+    mutable ProcessNameListID processHistoryID_;
     // Transient
     mutable ProcessNameList processHistory_;
     // Event ID

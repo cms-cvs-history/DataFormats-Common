@@ -2,7 +2,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: BranchEntryDescription.cc,v 1.1 2006/02/08 00:44:23 wmtan Exp $
+$Id: BranchEntryDescription.cc,v 1.1.2.2 2006/06/27 02:17:49 wmtan Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -33,6 +33,6 @@ namespace edm {
       && a.cid == b.cid
       && a.status == b.status
       && a.parents == b.parents
-      && a.moduleDescriptionHash_ == b.moduleDescriptionHash_;
+      && a.moduleDescriptionID_ == b.moduleDescriptionID_;
   }
 }

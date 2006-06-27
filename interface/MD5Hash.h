@@ -5,11 +5,11 @@
   
 MD5Hash:
 
-$Id: MD5Hash.h,v 1.2 2006/06/22 17:33:53 wmtan Exp $
+$Id: MD5Hash.h,v 1.1.2.2 2006/06/27 02:17:49 wmtan Exp $
 ----------------------------------------------------------------------*/
 namespace edm {
   struct MD5Hash {
-    static int const size = 8;
+    static int const size = 16;
     MD5Hash() {}
     ~MD5Hash() {}
     unsigned char value_[size];

@@ -2,7 +2,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: ModuleDescription.cc,v 1.4 2005/12/28 00:48:40 wmtan Exp $
+$Id: ModuleDescription.cc,v 1.1 2006/02/08 00:44:23 wmtan Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -32,6 +32,12 @@ namespace edm {
   bool
   ModuleDescription::operator!=(ModuleDescription const& rh) const {
     return !((*this) == rh);
+  }
+
+  ModuleDescriptionID
+  ModuleDescription::id() const
+  {
+    abort();
   }
 
 }

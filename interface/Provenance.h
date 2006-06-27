@@ -6,7 +6,7 @@
 Provenance: The full description of a product and how it came into
 existence.
 
-$Id: Provenance.h,v 1.5.2.3 2006/06/27 02:17:49 wmtan Exp $
+$Id: Provenance.h,v 1.5.2.4 2006/06/27 03:40:27 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 
@@ -48,7 +48,7 @@ namespace edm {
     ParameterSetID const& psetID() const {return event.psetID();}
     VersionNumber versionNumber() const {return event.versionNumber();}
     std::set<std::string> branchAliases() const {return product.branchAliases();}
-    Hash<ModuleDescription> moduleHash() const {return event.moduleHash();}
+    ModuleDescriptionID moduleDescriptionID() const {return event.moduleDescriptionID();}
 
     ConditionsID const& conditionsID() const {return event.cid;}
     BranchEntryDescription::CreatorStatus const& creatorStatus() const {return event.status;}

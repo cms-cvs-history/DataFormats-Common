@@ -5,7 +5,7 @@
   
 ModuleDescription: The description of a producer module.
 
-$Id: ModuleDescription.h,v 1.1 2006/02/08 00:44:23 wmtan Exp $
+$Id: ModuleDescription.h,v 1.2 2006/06/22 17:33:53 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <string>
 #include <iostream>
@@ -13,6 +13,7 @@ $Id: ModuleDescription.h,v 1.1 2006/02/08 00:44:23 wmtan Exp $
 #include "DataFormats/Common/interface/PassID.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
 #include "DataFormats/Common/interface/VersionNumber.h"
+#include "DataFormats/Common/interface/ModuleDescriptionID.h"
 
 namespace edm {
 
@@ -45,6 +46,8 @@ namespace edm {
     bool operator==(ModuleDescription const& rh) const;
 
     bool operator!=(ModuleDescription const& rh) const;
+    
+    ModuleDescriptionID id() const;
   };
 
   inline

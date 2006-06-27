@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+
+#include "DataFormats/Common/interface/ProcessNameListID.h"
+
 namespace edm {
   class ProcessNameList {
   public:
@@ -33,6 +36,8 @@ namespace edm {
     const_iterator end() const {return data_.end();}
     const_reverse_iterator rbegin() const {return data_.rbegin();}
     const_reverse_iterator rend() const {return data_.rend();}
+
+    ProcessNameListID id() const;
   private:
     std::vector<std::string> data_;
   };
