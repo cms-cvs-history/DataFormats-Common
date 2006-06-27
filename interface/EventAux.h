@@ -36,6 +36,7 @@ namespace edm
     ProcessNameList& processHistory() const {init(); return processHistory_;}
     EventID const& id() const {return id_;}
     Timestamp const& time() const {return time_;}
+    LuminosityBlockID const& luminosityBlockID() const {return luminosityBlockID_;}
     // most recently process that processed this event
     // is the last on the list, this defines what "latest" is
     mutable Hash<ProcessNameList> processHistoryHash_;
