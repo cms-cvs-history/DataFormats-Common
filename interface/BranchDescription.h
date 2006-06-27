@@ -6,7 +6,7 @@
 BranchDescription: The full description of a Branch.
 This description also applies to every product instance on the branch.  
 
-$Id: BranchDescription.h,v 1.11.2.1 2006/06/26 17:23:31 wmtan Exp $
+$Id: BranchDescription.h,v 1.9 2006/05/24 01:52:49 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <string>
@@ -14,6 +14,7 @@ $Id: BranchDescription.h,v 1.11.2.1 2006/06/26 17:23:31 wmtan Exp $
 
 #include "DataFormats/Common/interface/ProductID.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
+#include "DataFormats/Common/interface/ProcessIndex.h"
 
 /*
   BranchDescription
@@ -50,6 +51,10 @@ namespace edm {
 
     // the physical process that this program was part of (e.g. production)
     std::string processName_;
+
+    // This index will be N if this branch was created the N'th time
+    // a process named processName_ created one or more products.
+    // unsigned int processIndex_;
 
     // An ID uniquely identifying the branch
     ProductID productID_;
