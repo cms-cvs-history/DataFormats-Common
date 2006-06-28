@@ -1,12 +1,25 @@
+#include <sstream>
+#include <string>
+
+#include "SealZip/MD5Digest.h"
 #include "DataFormats/Common/interface/ModuleDescription.h"
 
 /*----------------------------------------------------------------------
 
-$Id: ModuleDescription.cc,v 1.1 2006/02/08 00:44:23 wmtan Exp $
+$Id: ModuleDescription.cc,v 1.1.2.1 2006/06/27 21:05:18 paterno Exp $
 
 ----------------------------------------------------------------------*/
 
 namespace edm {
+
+  ModuleDescription::ModuleDescription() :
+    pid(),
+    moduleName_(),
+    moduleLabel_(),
+    versionNumber_(0UL),
+    processName_(),
+    pass(0UL)
+  { }
 
   bool
   ModuleDescription::operator<(ModuleDescription const& rh) const {
@@ -37,7 +50,19 @@ namespace edm {
   ModuleDescriptionID
   ModuleDescription::id() const
   {
-    abort();
+    // This implementation is ripe for optimization.
+    // We do not use operator<< because it does not write out everything.
+    seal::MD5Digest md5alg;
+    std::ostringstream oss;
+    oss << pid << ' ' 
+	<< moduleName_ << ' '
+	<< moduleLabel_ << ' '
+	<< versionNumber_ << ' '
+	<< processName_ << ' '
+	<< pass;
+    std::string stringrep = oss.str();
+    md5alg.update(stringrep.data(), stringrep.size());
+    return ModuleDescriptionID(md5alg.format());
   }
 
 }

@@ -5,7 +5,7 @@
   
 ModuleDescription: The description of a producer module.
 
-$Id: ModuleDescription.h,v 1.2 2006/06/22 17:33:53 wmtan Exp $
+$Id: ModuleDescription.h,v 1.2.2.1 2006/06/27 21:05:17 paterno Exp $
 ----------------------------------------------------------------------*/
 #include <string>
 #include <iostream>
@@ -19,7 +19,19 @@ namespace edm {
 
   // once a module is born, these parts of the module's product provenance
   // are constant   (change to ModuleDescription)
+
   struct ModuleDescription {
+
+    ModuleDescription();
+    // compiler-written copy c'tor, assignment, and d'tor are correct.
+
+    bool operator<(ModuleDescription const& rh) const;
+
+    bool operator==(ModuleDescription const& rh) const;
+
+    bool operator!=(ModuleDescription const& rh) const;
+    
+    ModuleDescriptionID id() const;
 
     // ID of parameter set of the creator
     ParameterSetID pid;
@@ -41,13 +53,6 @@ namespace edm {
     // e.g. second production pass
     PassID pass;
 
-    bool operator<(ModuleDescription const& rh) const;
-
-    bool operator==(ModuleDescription const& rh) const;
-
-    bool operator!=(ModuleDescription const& rh) const;
-    
-    ModuleDescriptionID id() const;
   };
 
   inline

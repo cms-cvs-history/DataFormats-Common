@@ -11,5 +11,6 @@
 <bin file=DetSetVector_t.cpp></bin>
 <bin file=MD5Hash_t.cpp></bin>
 <bin file=ModuleDescription_t.cpp></bin>
+<bin file=ProcessNameList_t.cpp></bin>
 
 
