@@ -6,7 +6,7 @@
 BranchEntryDescription: The event dependent portion of the description of a product
 and how it came into existence.
 
-$Id: BranchEntryDescription.h,v 1.1.2.3 2006/06/27 21:05:17 paterno Exp $
+$Id: BranchEntryDescription.h,v 1.1.2.4 2006/06/30 04:30:04 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <vector>
@@ -82,6 +82,7 @@ namespace edm {
     ConditionsID const& conditionsID() const {return cid_;}
 
     ModuleDescriptionID const& moduleDescriptionID() const {return moduleDescriptionID_;}
+    ModuleDescription const& moduleDescription() const {init(); return *moduleDescriptionPtr_;}
   };
   
   inline
