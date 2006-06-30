@@ -4,7 +4,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: BranchDescription.cc,v 1.5 2006/05/24 01:52:50 wmtan Exp $
+$Id: BranchDescription.cc,v 1.7.2.2 2006/06/27 02:17:49 wmtan Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -16,9 +16,10 @@ namespace edm {
     fullClassName_(),
     friendlyClassName_(),
     productInstanceName_(),
+    moduleDescriptionID_(),
     psetIDs_(),
     branchAliases_(),
-    branchStatus_(Unknown)
+    produced_(false)
   { }
 
   BranchDescription::BranchDescription(
@@ -27,6 +28,7 @@ namespace edm {
 			std::string const& name, 
 			std::string const& fName, 
 			std::string const& pin, 
+			ModuleDescriptionID const& mdID,
 			std::set<ParameterSetID> const& psetIDs,
 			std::set<std::string> const& aliases) :
     moduleLabel_(moduleLabel),
@@ -35,9 +37,10 @@ namespace edm {
     fullClassName_(name),
     friendlyClassName_(fName),
     productInstanceName_(pin),
+    moduleDescriptionID_(mdID),
     psetIDs_(psetIDs),
     branchAliases_(aliases),
-    branchStatus_(Unknown) {
+    produced_(true) {
     init();
   }
 

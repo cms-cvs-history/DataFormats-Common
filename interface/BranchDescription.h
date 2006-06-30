@@ -6,7 +6,7 @@
 BranchDescription: The full description of a Branch.
 This description also applies to every product instance on the branch.  
 
-$Id: BranchDescription.h,v 1.11.2.3 2006/06/27 02:17:49 wmtan Exp $
+$Id: BranchDescription.h,v 1.11.2.4 2006/06/27 03:28:51 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <string>
@@ -14,6 +14,7 @@ $Id: BranchDescription.h,v 1.11.2.3 2006/06/27 02:17:49 wmtan Exp $
 
 #include "DataFormats/Common/interface/ProductID.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
+#include "DataFormats/Common/interface/ModuleDescriptionID.h"
 
 /*
   BranchDescription
@@ -27,11 +28,6 @@ namespace edm {
   class EDProduct;
   struct BranchDescription {
 
-    enum BranchStatus {Unknown = 0,
-			Absent,
-			Read,
-			Produced};
-
     BranchDescription();
 
     explicit BranchDescription(std::string const& moduleLabel, 
@@ -39,8 +35,9 @@ namespace edm {
 		std::string const& name, 
 		std::string const& fName, 
 		std::string const& pin, 
-		std::set<ParameterSetID> const& psetIDs,
-		std::set<std::string> const& aliases);
+		ModuleDescriptionID const& mdID = ModuleDescriptionID(),
+		std::set<ParameterSetID> const& psetIDs = std::set<ParameterSetID>(),
+		std::set<std::string> const& aliases = std::set<std::string>());
 
     ~BranchDescription() {}
 
@@ -64,6 +61,10 @@ namespace edm {
     // that are produced by the same producer
     std::string productInstanceName_;
 
+    // The module description id of the producer (transient).
+    // This is only valid if produced_ is true.
+    mutable ModuleDescriptionID moduleDescriptionID_;
+
     // ID's of parameter set of the creators of products
     // on this branch
     std::set<ParameterSetID> psetIDs_;
@@ -75,8 +76,9 @@ namespace edm {
     // attributes.
     mutable std::string branchName_;
 
-    // The branch status (transient)
-    mutable BranchStatus branchStatus_;
+    // Was this branch produced in this process
+    // rather than in a previous process
+    bool produced_;
 
     void init() const;
 
