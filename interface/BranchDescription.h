@@ -6,7 +6,7 @@
 BranchDescription: The full description of a Branch.
 This description also applies to every product instance on the branch.  
 
-$Id: BranchDescription.h,v 1.11.2.4 2006/06/27 03:28:51 wmtan Exp $
+$Id: BranchDescription.h,v 1.11.2.5 2006/06/30 04:30:04 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <string>
@@ -90,7 +90,7 @@ namespace edm {
     std::string const& processName() const {return processName_;}
     ProductID const& productID() const {return productID_;}
     std::string const& productInstanceName() const {return productInstanceName_;} 
-    std::string const& productType() const {return friendlyClassName_;}
+    std::string const& friendlyClassName() const {return friendlyClassName_;}
     std::set<std::string> const& branchAliases() const {return branchAliases_;}
     std::set<ParameterSetID> const& psetIDs() const {return psetIDs_;}
   };
