@@ -5,14 +5,14 @@
   
 ModuleDescription: The description of a producer module.
 
-$Id: ModuleDescription.h,v 1.2.2.1 2006/06/27 21:05:17 paterno Exp $
+$Id: ModuleDescription.h,v 1.2.2.2 2006/06/28 17:07:58 paterno Exp $
 ----------------------------------------------------------------------*/
 #include <string>
 #include <iostream>
 
 #include "DataFormats/Common/interface/PassID.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
-#include "DataFormats/Common/interface/VersionNumber.h"
+#include "DataFormats/Common/interface/ReleaseVersion.h"
 #include "DataFormats/Common/interface/ModuleDescriptionID.h"
 
 namespace edm {
@@ -34,7 +34,7 @@ namespace edm {
     ModuleDescriptionID id() const;
 
     // ID of parameter set of the creator
-    ParameterSetID pid;
+    ParameterSetID parameterSetID_;
 
     // The class name of the creator
     std::string moduleName_;    
@@ -44,14 +44,14 @@ namespace edm {
     std::string moduleLabel_;
 
     // the release tag of the executable
-    VersionNumber versionNumber_;
+    ReleaseVersion releaseVersion_;
 
     // the physical process that this program was part of (e.g. production)
     std::string processName_;
 
     // what the heck is this? I think its the version of the processName_
     // e.g. second production pass
-    PassID pass;
+    PassID passID_;
 
   };
 

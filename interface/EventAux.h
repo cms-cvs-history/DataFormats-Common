@@ -3,8 +3,8 @@
 
 #include "boost/shared_ptr.hpp"
 
-#include "DataFormats/Common/interface/ProcessNameList.h"
-#include "DataFormats/Common/interface/ProcessNameListID.h"
+#include "DataFormats/Common/interface/ProcessHistory.h"
+#include "DataFormats/Common/interface/ProcessHistoryID.h"
 #include "DataFormats/Common/interface/EventID.h"
 #include "DataFormats/Common/interface/Timestamp.h"
 #include "DataFormats/Common/interface/LuminosityBlockID.h"
@@ -35,16 +35,16 @@ namespace edm
 	luminosityBlockID_(lb) {}
     ~EventAux() {}
     void init() const;
-    ProcessNameList& processHistory() const {init(); return *processHistoryPtr_;}
-    ProcessNameListID& processHistoryID() const {return processHistoryID_;}
+    ProcessHistory& processHistory() const {init(); return *processHistoryPtr_;}
+    ProcessHistoryID& processHistoryID() const {return processHistoryID_;}
     EventID const& id() const {return id_;}
     Timestamp const& time() const {return time_;}
     LuminosityBlockID const& luminosityBlockID() const {return luminosityBlockID_;}
     // most recently process that processed this event
     // is the last on the list, this defines what "latest" is
-    mutable ProcessNameListID processHistoryID_;
+    mutable ProcessHistoryID processHistoryID_;
     // Transient
-    mutable boost::shared_ptr<ProcessNameList> processHistoryPtr_;
+    mutable boost::shared_ptr<ProcessHistory> processHistoryPtr_;
     // Event ID
     EventID id_;
     // Time from DAQ

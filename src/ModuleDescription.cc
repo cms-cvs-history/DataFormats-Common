@@ -6,19 +6,19 @@
 
 /*----------------------------------------------------------------------
 
-$Id: ModuleDescription.cc,v 1.1.2.1 2006/06/27 21:05:18 paterno Exp $
+$Id: ModuleDescription.cc,v 1.1.2.2 2006/06/28 17:07:59 paterno Exp $
 
 ----------------------------------------------------------------------*/
 
 namespace edm {
 
   ModuleDescription::ModuleDescription() :
-    pid(),
+    parameterSetID_(),
     moduleName_(),
     moduleLabel_(),
-    versionNumber_(0UL),
+    releaseVersion_(),
     processName_(),
-    pass(0UL)
+    passID_()
   { }
 
   bool
@@ -29,11 +29,11 @@ namespace edm {
     if (rh.processName_ < processName_) return false;
     if (moduleName_ < rh.moduleName_) return true;
     if (rh.moduleName_ < moduleName_) return false;
-    if (pid < rh.pid) return true;
-    if (rh.pid < pid) return false;
-    if (versionNumber_ < rh.versionNumber_) return true;
-    if (rh.versionNumber_ < versionNumber_) return false;
-    if (pass < rh.pass) return true;
+    if (parameterSetID_ < rh.parameterSetID_) return true;
+    if (rh.parameterSetID_ < parameterSetID_) return false;
+    if (releaseVersion_ < rh.releaseVersion_) return true;
+    if (rh.releaseVersion_ < releaseVersion_) return false;
+    if (passID_ < rh.passID_) return true;
     return false;
   } 
 
@@ -54,12 +54,12 @@ namespace edm {
     // We do not use operator<< because it does not write out everything.
     seal::MD5Digest md5alg;
     std::ostringstream oss;
-    oss << pid << ' ' 
+    oss << parameterSetID_ << ' ' 
 	<< moduleName_ << ' '
 	<< moduleLabel_ << ' '
-	<< versionNumber_ << ' '
+	<< releaseVersion_ << ' '
 	<< processName_ << ' '
-	<< pass;
+	<< passID_;
     std::string stringrep = oss.str();
     md5alg.update(stringrep.data(), stringrep.size());
     return ModuleDescriptionID(md5alg.format());

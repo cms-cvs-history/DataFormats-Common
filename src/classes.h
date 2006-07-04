@@ -12,8 +12,8 @@
 #include "DataFormats/Common/interface/ModuleDescriptionID.h"
 #include "DataFormats/Common/interface/ParameterSetBlob.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
-#include "DataFormats/Common/interface/ProcessNameList.h"
-#include "DataFormats/Common/interface/ProcessNameListID.h"
+#include "DataFormats/Common/interface/ProcessHistory.h"
+#include "DataFormats/Common/interface/ProcessHistoryID.h"
 #include "DataFormats/Common/interface/ProductID.h"
 #include "DataFormats/Common/interface/ProductRegistry.h"
 #include "DataFormats/Common/interface/RefBase.h"
@@ -81,7 +81,7 @@ namespace { namespace {
   edm::RefVectorBase<int> dummyRefVectorBase2;
 
   std::map<edm::Hash<0>, edm::ModuleDescription> dummyMapMod;
-  std::map<edm::Hash<2>, edm::ProcessNameList> dummyMapProc;
+  std::map<edm::Hash<2>, edm::ProcessHistory> dummyMapProc;
   std::map<edm::Hash<1>, edm::ParameterSetBlob> dummyMapParam;
   std::set<edm::Hash<1> > dummySetParam;
 }}

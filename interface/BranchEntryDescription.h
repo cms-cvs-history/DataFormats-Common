@@ -6,7 +6,7 @@
 BranchEntryDescription: The event dependent portion of the description of a product
 and how it came into existence.
 
-$Id: BranchEntryDescription.h,v 1.1.2.4 2006/06/30 04:30:04 wmtan Exp $
+$Id: BranchEntryDescription.h,v 1.1.2.5 2006/06/30 21:59:21 wmtan Exp $
 ----------------------------------------------------------------------*/
 #include <ostream>
 #include <vector>
@@ -73,9 +73,9 @@ namespace edm {
     void write(std::ostream& os) const;
 
     std::string const& moduleName() const {init(); return moduleDescriptionPtr_->moduleName_;}
-    PassID const& passID() const {init(); return moduleDescriptionPtr_->pass;}
-    ParameterSetID const& psetID() const {init(); return moduleDescriptionPtr_->pid;}
-    VersionNumber const& versionNumber() const {init(); return moduleDescriptionPtr_->versionNumber_;}
+    PassID const& passID() const {init(); return moduleDescriptionPtr_->passID_;}
+    ParameterSetID const& psetID() const {init(); return moduleDescriptionPtr_->parameterSetID_;}
+    ReleaseVersion const& releaseVersion() const {init(); return moduleDescriptionPtr_->releaseVersion_;}
     bool const& isPresent() const {return isPresent_;}
     CreatorStatus const& creatorStatus() const {return status_;}
     std::vector<ProductID> const& parents() const {return parents_;}

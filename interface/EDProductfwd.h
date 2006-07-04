@@ -5,13 +5,13 @@
   
 Forward declarations of types in the EDM.
 
-$Id: EDProductfwd.h,v 1.2 2006/03/23 23:58:33 wmtan Exp $
+$Id: EDProductfwd.h,v 1.2.2.1 2006/06/27 21:05:17 paterno Exp $
 
 ----------------------------------------------------------------------*/
 
 #include "DataFormats/Common/interface/ModuleDescriptionID.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
-#include "DataFormats/Common/interface/ProcessNameListID.h"
+#include "DataFormats/Common/interface/ProcessHistoryID.h"
 
 namespace edm 
 {

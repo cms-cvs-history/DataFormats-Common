@@ -1,7 +1,7 @@
 #ifndef DataFormatsCommonHashedTypes_h
 #define DataFormatsCommonHashedTypes_h
 
-// $Id:$
+// $Id: HashedTypes.h,v 1.1.2.1 2006/06/27 21:05:17 paterno Exp $
 //
 
 /// Declaration of the enum HashedTypes, used in defining several "id"
@@ -13,7 +13,7 @@ namespace edm
     {
       ModuleDescriptionType,
       ParameterSetType,
-      ProcessNameListType
+      ProcessHistoryType
     };		     
 }
 
