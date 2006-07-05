@@ -11,8 +11,8 @@ int main()
   assert( pnl1 == pnl1 );
   edm::ProcessHistory pnl2;
   assert( pnl1 == pnl2 );
-  edm::ProcessHistoryItem iHLT(std::string("HLT"), edm::ParameterSetID(), edm::getReleaseVersion(), edm::getPassID());
-  edm::ProcessHistoryItem iRECO(std::string("RECO"), edm::ParameterSetID(), edm::getReleaseVersion(), edm::getPassID());
+  edm::ProcessConfiguration iHLT(std::string("HLT"), edm::ParameterSetID(), edm::getReleaseVersion(), edm::getPassID());
+  edm::ProcessConfiguration iRECO(std::string("RECO"), edm::ParameterSetID(), edm::getReleaseVersion(), edm::getPassID());
   pnl2.push_back(iHLT);
   assert( pnl1 != pnl2 );
   edm::ProcessHistory pnl3;

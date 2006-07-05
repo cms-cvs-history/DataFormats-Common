@@ -4,13 +4,13 @@
 #include <string>
 #include <vector>
 
-#include "DataFormats/Common/interface/ProcessHistoryItem.h"
+#include "DataFormats/Common/interface/ProcessConfiguration.h"
 #include "DataFormats/Common/interface/ProcessHistoryID.h"
 
 namespace edm {
   class ProcessHistory {
   public:
-    typedef ProcessHistoryItem value_type;
+    typedef ProcessConfiguration value_type;
     typedef std::vector<value_type> collection_type;
 
     typedef collection_type::iterator       iterator;

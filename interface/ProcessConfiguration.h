@@ -1,5 +1,5 @@
-#ifndef Common_ProcessHistoryItem_h
-#define Common_ProcessHistoryItem_h
+#ifndef Common_ProcessConfiguration_h
+#define Common_ProcessConfiguration_h
 
 #include <string>
 
@@ -8,10 +8,9 @@
 #include "DataFormats/Common/interface/ReleaseVersion.h"
 
 namespace edm {
-  class ProcessHistoryItem {
-  public:
-    ProcessHistoryItem() : processName_(), parameterSetID_(), releaseVersion_(), passID_() {}
-    ProcessHistoryItem(
+  struct ProcessConfiguration {
+    ProcessConfiguration() : processName_(), parameterSetID_(), releaseVersion_(), passID_() {}
+    ProcessConfiguration(
 	std::string const& procName,
 	ParameterSetID const& pSetID,
 	ReleaseVersion const& relVersion,
@@ -26,7 +25,6 @@ namespace edm {
     ReleaseVersion const& releaseVersion() const {return releaseVersion_;}
     PassID const& passID() const {return passID_;}
 
-  private:
     std::string processName_;
     ParameterSetID parameterSetID_;
     ReleaseVersion releaseVersion_; 
@@ -35,7 +33,7 @@ namespace edm {
 
   inline
   bool
-  operator==(ProcessHistoryItem const& a, ProcessHistoryItem const& b) {
+  operator==(ProcessConfiguration const& a, ProcessConfiguration const& b) {
     return a.processName() == b.processName() &&
     a.parameterSetID() == b.parameterSetID() &&
     a.releaseVersion() == b.releaseVersion() &&
@@ -44,7 +42,7 @@ namespace edm {
 
   inline
   bool
-  operator!=(ProcessHistoryItem const& a, ProcessHistoryItem const& b) {
+  operator!=(ProcessConfiguration const& a, ProcessConfiguration const& b) {
     return !(a == b);
   }
 }

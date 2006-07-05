@@ -96,8 +96,8 @@
    <field name="moduleDescriptionID_" transient="true"/>
  </class>
  <class name="edm::ParameterSetBlob"/>
- <class name="edm::ProcessHistoryItem"/>
- <class name="std::vector<edm::ProcessHistoryItem>"/>
+ <class name="edm::ProcessConfiguration"/>
+ <class name="std::vector<edm::ProcessConfiguration>"/>
  <class name="edm::ProcessHistory"/>
 
  <class name="edm::MD5Hash"/>
