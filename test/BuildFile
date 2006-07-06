@@ -8,7 +8,9 @@
 <bin name="testDataFormats_Associated" file="test_Associated.cpp">
 </bin>
 
-<bin file=DetSetVector_t.cpp>
-</bin>
+<bin file=DetSetVector_t.cpp></bin>
+<bin file=MD5Hash_t.cpp></bin>
+<bin file=ModuleDescription_t.cpp></bin>
+<bin file=ProcessHistory_t.cpp></bin>
 
 
