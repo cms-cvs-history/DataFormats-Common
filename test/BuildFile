@@ -12,5 +12,6 @@
 <bin file=MD5Hash_t.cpp></bin>
 <bin file=ModuleDescription_t.cpp></bin>
 <bin file=ProcessHistory_t.cpp></bin>
+<bin file=ProcessConfiguration_t.cpp></bin>
 
 
