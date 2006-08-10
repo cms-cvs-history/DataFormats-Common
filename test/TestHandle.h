@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
   
-$Id: TestHandle.h,v 1.1 2006/02/07 07:01:52 wmtan Exp $
+$Id: TestHandle.h,v 1.2 2006/06/14 23:44:19 wmtan Exp $
 
 Version of Handle 
 
@@ -73,7 +73,7 @@ namespace edm {
   void
   TestHandle<T>::swap(TestHandle<T>& other) {
     std::swap(prod_, other.prod_);
-    std::swap(id_, other.id_);
+    swap(id_, other.id_);
   }
 
   template <class T>
@@ -112,6 +112,15 @@ namespace edm {
   ProductID 
   TestHandle<T>::id() const {
     return id_;
+  }
+
+  // Free swap function
+  template <class T>
+  inline
+  void
+  swap(TestHandle<T>& a, TestHandle<T>& b) 
+  {
+    a.swap(b);
   }
 }
 
