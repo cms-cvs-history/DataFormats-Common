@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
   
-$Id: TestHandle.h,v 1.2 2006/06/14 23:44:19 wmtan Exp $
+$Id: TestHandle.h,v 1.3 2006/08/10 22:38:45 wmtan Exp $
 
 Version of Handle 
 
@@ -59,9 +59,9 @@ namespace edm {
   { }
 
   template <class T>
-  TestHandle<T>::TestHandle(T const* product, ProductID const& id) :
-    prod_(product),
-    id_(id) { 
+  TestHandle<T>::TestHandle(T const* theProduct, ProductID const& theId) :
+    prod_(theProduct),
+    id_(theId) { 
   }
 
   template <class T>
