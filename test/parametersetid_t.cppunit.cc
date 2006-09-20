@@ -5,11 +5,12 @@
  */
 
 #include <map>
+#include <string>
 
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "FWCore/Utilities/interface/EDMException.h"
 #include "DataFormats/Common/interface/ParameterSetID.h"
+#include "FWCore/Utilities/interface/EDMException.h"
 
 
 class testParameterSetID: public CppUnit::TestFixture
@@ -20,9 +21,18 @@ class testParameterSetID: public CppUnit::TestFixture
   CPPUNIT_TEST(comparisonTest);
   CPPUNIT_TEST(suitableForMapTest);
   CPPUNIT_TEST(unhexifyTest);
+  CPPUNIT_TEST(printTest);
   CPPUNIT_TEST_SUITE_END();
+
+  std::string default_id_string;
+  std::string cow16;
+
  public:
-  void setUp(){}
+  void setUp()
+  {
+    default_id_string = "d41d8cd98f00b204e9800998ecf8427e";
+    cow16 = "DEADBEEFDEADBEEF";
+  }
   void tearDown(){}
    
   void constructTest();
@@ -30,6 +40,7 @@ class testParameterSetID: public CppUnit::TestFixture
   void comparisonTest();
   void suitableForMapTest();
   void unhexifyTest();
+  void printTest();
 };
 
 ///registration of the test so that the runner can find it
@@ -40,8 +51,9 @@ void testParameterSetID::constructTest()
   edm::ParameterSetID id1;
   CPPUNIT_ASSERT(!id1.isValid());
 
-  edm::ParameterSetID id2("DEADBEEFDEADBEEF");
+  edm::ParameterSetID id2(cow16);
   CPPUNIT_ASSERT(id2.isValid());
+  CPPUNIT_ASSERT(id2.compactForm() == cow16);
 }
 
 void testParameterSetID::badConstructTest()
@@ -70,7 +82,7 @@ void testParameterSetID::suitableForMapTest()
   CPPUNIT_ASSERT (m.size() == 1);
   CPPUNIT_ASSERT (m[a] == 100);
 
-  edm::ParameterSetID b("DEADBEEFDEADBEEF");
+  edm::ParameterSetID b(cow16);
   m[b] = 200;
   CPPUNIT_ASSERT (m.size() == 2);
   CPPUNIT_ASSERT (m[a] == 100);
@@ -87,7 +99,7 @@ void testParameterSetID::suitableForMapTest()
 void testParameterSetID::unhexifyTest()
 {
   // 'a' has the MD5 checksum for an empty string.
-  edm::ParameterSetID a("d41d8cd98f00b204e9800998ecf8427e");
+  edm::ParameterSetID a(default_id_string);
   std::string a_compact = a.compactForm();
   CPPUNIT_ASSERT((unsigned char)a_compact[0] == 0xd4);
   CPPUNIT_ASSERT((unsigned char)a_compact[1] == 0x1d);
@@ -109,4 +121,21 @@ void testParameterSetID::unhexifyTest()
   edm::ParameterSetID b;
   std::string b_compact = b.compactForm();
   CPPUNIT_ASSERT(b_compact.size() == 16);
+}
+
+void testParameterSetID::printTest()
+{
+  std::ostringstream os;
+  edm::ParameterSetID id(default_id_string);
+  os << id;
+  std::string output = os.str();
+  CPPUNIT_ASSERT(output == default_id_string);
+
+  std::ostringstream os2;
+  std::string s2("0123456789abcdef0123456789abcdef");
+  edm::ParameterSetID id2(s2);
+  CPPUNIT_ASSERT(id2.isValid());
+  os2 << id2;
+  std::string output2 = os2.str();
+  CPPUNIT_ASSERT(output2 == s2);
 }
