@@ -108,5 +108,5 @@ void testParameterSetID::unhexifyTest()
 
   edm::ParameterSetID b;
   std::string b_compact = b.compactForm();
-  CPPUNIT_ASSERT(b_compact.empty());
+  CPPUNIT_ASSERT(b_compact.size() == 16);
 }
