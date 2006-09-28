@@ -101,22 +101,22 @@ void testParameterSetID::unhexifyTest()
   // 'a' has the MD5 checksum for an empty string.
   edm::ParameterSetID a(default_id_string);
   std::string a_compact = a.compactForm();
-  CPPUNIT_ASSERT((unsigned char)a_compact[0] == 0xd4);
-  CPPUNIT_ASSERT((unsigned char)a_compact[1] == 0x1d);
-  CPPUNIT_ASSERT((unsigned char)a_compact[2] == 0x8c);
-  CPPUNIT_ASSERT((unsigned char)a_compact[3] == 0xd9);
-  CPPUNIT_ASSERT((unsigned char)a_compact[4] == 0x8f);
-  CPPUNIT_ASSERT((unsigned char)a_compact[5] == 0x00);
-  CPPUNIT_ASSERT((unsigned char)a_compact[6] == 0xb2);
-  CPPUNIT_ASSERT((unsigned char)a_compact[7] == 0x04);
-  CPPUNIT_ASSERT((unsigned char)a_compact[8] == 0xe9);
-  CPPUNIT_ASSERT((unsigned char)a_compact[9] == 0x80);
-  CPPUNIT_ASSERT((unsigned char)a_compact[10] == 0x09);
-  CPPUNIT_ASSERT((unsigned char)a_compact[11] == 0x98);
-  CPPUNIT_ASSERT((unsigned char)a_compact[12] == 0xec);
-  CPPUNIT_ASSERT((unsigned char)a_compact[13] == 0xf8);
-  CPPUNIT_ASSERT((unsigned char)a_compact[14] == 0x42);
-  CPPUNIT_ASSERT((unsigned char)a_compact[15] == 0x7e);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[0]) == 0xd4);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[1]) == 0x1d);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[2]) == 0x8c);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[3]) == 0xd9);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[4]) == 0x8f);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[5]) == 0x00);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[6]) == 0xb2);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[7]) == 0x04);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[8]) == 0xe9);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[9]) == 0x80);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[10]) == 0x09);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[11]) == 0x98);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[12]) == 0xec);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[13]) == 0xf8);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[14]) == 0x42);
+  CPPUNIT_ASSERT(static_cast<unsigned char>(a_compact[15]) == 0x7e);
 
   edm::ParameterSetID b;
   std::string b_compact = b.compactForm();
