@@ -22,6 +22,7 @@ class testParameterSetID: public CppUnit::TestFixture
   CPPUNIT_TEST(suitableForMapTest);
   CPPUNIT_TEST(unhexifyTest);
   CPPUNIT_TEST(printTest);
+  CPPUNIT_TEST(oldRootFileCompatibilityTest);
   CPPUNIT_TEST_SUITE_END();
 
   std::string default_id_string;
@@ -41,6 +42,7 @@ class testParameterSetID: public CppUnit::TestFixture
   void suitableForMapTest();
   void unhexifyTest();
   void printTest();
+  void oldRootFileCompatibilityTest();
 };
 
 ///registration of the test so that the runner can find it
@@ -138,4 +140,28 @@ void testParameterSetID::printTest()
   os2 << id2;
   std::string output2 = os2.str();
   CPPUNIT_ASSERT(output2 == s2);
+}
+
+#include <iostream>
+void testParameterSetID::oldRootFileCompatibilityTest()
+{
+  using namespace edm;
+  //simulate what ROOT does when reading an old ParameterSetID which has 32 characters
+  ParameterSetID dflt(default_id_string);
+  std::string sValue(default_id_string);
+  ParameterSetID* evil( reinterpret_cast<ParameterSetID*>(&sValue));
+
+  CPPUNIT_ASSERT(not evil->isCompactForm());
+  CPPUNIT_ASSERT( dflt.isCompactForm());
+
+  ParameterSetID evilCopy(*evil);
+  CPPUNIT_ASSERT( evilCopy.isCompactForm());
+  
+  CPPUNIT_ASSERT(dflt == evilCopy);
+  CPPUNIT_ASSERT(evilCopy == *evil);
+
+  std::cout << dflt<<std::endl;
+  std::cout << evil<<std::endl;
+  CPPUNIT_ASSERT(dflt == *evil);
+  
 }
