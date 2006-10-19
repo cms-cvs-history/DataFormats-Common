@@ -164,4 +164,48 @@ void testParameterSetID::oldRootFileCompatibilityTest()
   std::cout << evil<<std::endl;
   CPPUNIT_ASSERT(dflt == *evil);
   
+  /*Do an 'exhaustive' test to see if comparisons are preserved
+    in the case of conversion from non-compact to compact form
+    and that comparision between non-compact to compact form also 
+    preserves ordering.
+    Because the 'hex' version is just a repetition of two characters per byte,
+    we only need to do 2^8-1 comparisions rather than 2^32-1 comparisions when
+    doing the exhaustive test
+   */
+  
+  const char hexbits[] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+  const size_t nHexBits = sizeof(hexbits)/sizeof(char);
+  char buffer[3];
+  buffer[2]=0;
+  std::string theOldValue("00000000000000000000000000000000");
+  ParameterSetID theOldHash( theOldValue);
+  for( const char* itHigh= hexbits; itHigh != hexbits+nHexBits; ++itHigh) {
+    const char* lowStart = hexbits;
+    if( itHigh == hexbits) {
+      lowStart +=1;
+    }
+    for( const char* itLow=lowStart; itLow != hexbits+nHexBits; ++itLow) {
+      buffer[0]=*itHigh;
+      buffer[1]=*itLow;
+      std::string theValue(buffer);
+      //need to make this 32 bytes long, now we are 2 bytes
+      theValue = theValue+theValue; //4
+      theValue = theValue+theValue; //8
+      theValue = theValue+theValue; //16
+      theValue = theValue+theValue; //32
+      //std::cout <<theValue<<std::endl;
+      CPPUNIT_ASSERT(theOldValue < theValue);
+      ParameterSetID theHash(theValue);
+      CPPUNIT_ASSERT(theOldHash < theHash);
+      
+      ParameterSetID* theEvil( reinterpret_cast<ParameterSetID*>(&theValue));
+      ParameterSetID* theOldEvil( reinterpret_cast<ParameterSetID*>(&theOldValue));
+      CPPUNIT_ASSERT(*theOldEvil < *theEvil);
+      CPPUNIT_ASSERT(*theOldEvil < theHash);
+      CPPUNIT_ASSERT(theOldHash < *theEvil);
+      theOldValue = theValue;
+      theOldHash = theHash;
+    }
+  }
+  
 }
