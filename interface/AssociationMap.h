@@ -6,170 +6,16 @@
  *
  * \author Luca Lista, INFN
  *
- * $Id: AssociationMap.h,v 1.16 2006/06/16 22:50:55 wmtan Exp $
+ * $Id: AssociationMap.h,v 1.24 2006/09/26 10:37:21 llista Exp $
  *
  */
-#include "DataFormats/Common/interface/RefProd.h"
-#include "DataFormats/Common/interface/Ref.h"
 #include "DataFormats/Common/interface/RefVector.h"
-#include "FWCore/Utilities/interface/EDMException.h"
-#include <map>
-#include <vector>
+#include "DataFormats/Common/interface/OneToValue.h"
+#include "DataFormats/Common/interface/OneToOne.h"
+#include "DataFormats/Common/interface/OneToMany.h"
+#include "DataFormats/Common/interface/OneToManyWithQuality.h"
 
 namespace edm {
-  namespace helpers {
-    template<typename K, typename V>
-    struct KeyVal {
-      KeyVal() { }
-      KeyVal( const K & k, const V & v ) : key( k ), val( v ) { }
-      K key;
-      V val;
-    };
-
-    template<typename K>
-    struct Key {
-      Key() { }
-      Key( const K & k ) : key( k ) { }
-      K key;
-    };
-
-    /// throw if r hasn't the same id as rp
-    template<typename RP, typename R>
-    void checkRef( const RP & rp, const R & r ) {
-      if ( r.id() != r.id() )
-	throw edm::Exception( edm::errors::InvalidReference, "invalid reference" );
-    }
-  }
-
-  template<typename CKey, typename CVal, typename index = unsigned int>
-  class OneToOne {
-    /// reference to "key" collection
-    typedef edm::RefProd<CKey> KeyRefProd;
-    /// reference to "value" collection
-    typedef edm::RefProd<CVal> ValRefProd;
-    /// values reference collection type
-    typedef edm::Ref<CVal> val_type;
-  public:
-    /// insert key type
-    typedef edm::Ref<CKey> key_type;
-    /// insert val type
-    typedef edm::Ref<CVal> data_type;
-    /// index type
-    typedef index index_type;
-    /// map type
-    typedef std::map<index_type, index_type> map_type;
-    /// value type
-    typedef helpers::KeyVal<key_type, val_type> value_type;
-    /// reference set type
-    typedef helpers::KeyVal<KeyRefProd, ValRefProd> ref_type;
-    /// insert in the map
-    static void insert(  ref_type & ref, map_type & m,
-			const key_type & k, const data_type & v ) {
-     if ( k.isNull() || v.isNull() )
-	throw edm::Exception( edm::errors::InvalidReference )
-	  << "can't insert null references in AssociationMap";
-      if ( ref.key.isNull() ) {
-	ref.key = KeyRefProd( k );
-	ref.val = ValRefProd( v );
-      }
-      helpers::checkRef( ref.key, k ); helpers::checkRef( ref.val, v );
-      index_type ik = index_type( k.key() ), iv = index_type( v.key() );
-      m[ ik ] = iv;
-    }
-    /// return values collection
-    static val_type val( const ref_type & ref, index_type iv ) {
-      return val_type( ref.val, iv );
-    }
-    /// size of data_type
-    static typename map_type::size_type size( const index_type & v ) { return 1; }
-  };
-
-  template<typename CKey, typename CVal, typename index = unsigned int>
-  class OneToMany {
-    /// reference to "key" collection
-    typedef edm::RefProd<CKey> KeyRefProd;
-    /// reference to "value" collection
-    typedef edm::RefProd<CVal> ValRefProd;
-    /// values reference collection type
-    typedef edm::RefVector<CVal> val_type;
-  public:
-    /// insert key type
-    typedef edm::Ref<CKey> key_type;
-    /// insert val type
-    typedef edm::Ref<CVal> data_type;
-    /// index type
-    typedef index index_type;
-    /// map type
-    typedef std::map<index_type, std::vector<index_type> > map_type;
-    /// value type
-    typedef helpers::KeyVal<key_type, val_type> value_type;
-    /// reference set type
-    typedef helpers::KeyVal<KeyRefProd, ValRefProd> ref_type;
-    /// insert in the map
-    static void insert( ref_type & ref, map_type & m,
-			const key_type & k, const data_type & v ) {
-     if ( k.isNull() || v.isNull() )
-	throw edm::Exception( edm::errors::InvalidReference )
-	  << "can't insert null references in AssociationMap";
-      if ( ref.key.isNull() ) {
-	ref.key = KeyRefProd( k );
-	ref.val = ValRefProd( v );
-      }
-      helpers::checkRef( ref.key, k ); helpers::checkRef( ref.val, v );
-      index_type ik = index_type( k.key() ), iv = index_type( v.key() );
-      m[ ik ].push_back( iv );
-    }
-    /// return values collection
-    static val_type val( const ref_type & ref, const std::vector<index_type> & iv ) {
-      val_type v( ref.val.id() );
-      for( typename std::vector<index_type>::const_iterator idx = iv.begin(); idx != iv.end(); ++ idx )
-	v.push_back( edm::Ref<CVal>( ref.val, * idx ) );
-      return v;
-    }
-    /// size of data_type
-    static typename map_type::size_type size( const std::vector<index_type> & v ) { return v.size(); }
-  };
-
-  template<typename CKey, typename Val, typename index = unsigned int>
-  class OneToValue {
-    /// reference to "key" collection
-    typedef edm::RefProd<CKey> KeyRefProd;
-    /// values reference collection type
-    typedef Val val_type;
-  public:
-    /// insert key type
-    typedef edm::Ref<CKey> key_type;
-    /// insert val type
-    typedef Val data_type;
-    /// index type
-    typedef index index_type;
-    /// map type
-    typedef std::map<index_type, Val> map_type;
-    /// value type
-    typedef helpers::KeyVal<key_type, val_type> value_type;
-    /// reference set type
-    typedef helpers::Key<KeyRefProd> ref_type;
-    /// insert in the map
-    static void insert( ref_type & ref, map_type & m,
-			const key_type & k, const data_type & v ) {
-     if ( k.isNull() )
-	throw edm::Exception( edm::errors::InvalidReference )
-	  << "can't insert null references in AssociationMap";
-      if ( ref.key.isNull() ) {
-	ref.key = KeyRefProd( k );
-      }
-      helpers::checkRef( ref.key, k );
-      index_type ik = index_type( k.key() );
-      m[ ik ] = v;
-    }
-    /// return values collection
-    static val_type val( const ref_type & ref, const Val & v ) {
-      return v;
-    }
-    /// size of data_type
-    static typename map_type::size_type size( const index_type & ) { return 1; }
-  };
-
   template<typename Tag>
   struct AssociationMap {
     /// self type
@@ -186,14 +32,16 @@ namespace edm {
     typedef typename Tag::map_type map_type;
     /// size type
     typedef typename map_type::size_type size_type;
-    /// valye type
+    /// value type
     typedef typename Tag::value_type value_type;
+    /// result type
+    typedef typename value_type::value_type result_type;
     /// transient map type
     typedef typename std::map<index_type, value_type> transient_map_type;
 
     /// const iterator
     struct const_iterator {
-      typedef self::value_type value_type;
+      typedef typename self::value_type value_type;
       typedef ptrdiff_t difference_type;
       typedef value_type * pointer;
       typedef value_type & reference;
@@ -245,9 +93,9 @@ namespace edm {
       return map_.erase( i );
     }
     /// find element with specified reference key
-    const value_type & operator[]( const key_type & k ) const {
+    const result_type & operator[]( const key_type & k ) const {
       helpers::checkRef( ref_.key, k );
-      return operator[]( k.key() );
+      return operator[]( k.key() ).val;
     }
     /// number of associations to a key
     size_type numberOfAssociations( const key_type & k ) const {
@@ -256,15 +104,17 @@ namespace edm {
       if ( f == map_.end() ) return 0;
       return Tag::size( f->second );
     }
+    /// post insert action
+    void post_insert() { Tag::sort( map_ ); }
 
   private:
     /// find helper
     struct Find :
       public std::binary_function<const self&, size_type, const value_type *> {
       typedef Find self;
-      typename self::result_type operator()( typename self::first_argument_type c,
-					     typename self::second_argument_type i ) {
-	return & c[ i ];
+      const value_type * operator()( typename self::first_argument_type c,
+				     typename self::second_argument_type i ) {
+	return & ( * c.find( i ) );
       }
     };
     /// reference set
@@ -279,7 +129,7 @@ namespace edm {
       if ( f == map_.end() ) return end();
       return const_iterator( this, f );
     }
-    /// return element with key i
+    /// return value_typeelement with key i
     const value_type & operator[]( size_type i ) const {
       typename transient_map_type::const_iterator tf = transientMap_.find( i );
       if ( tf == transientMap_.end() ) {
@@ -308,6 +158,11 @@ namespace edm {
     };
   }
 
+  /// has post insert trait
+  template<typename  T> 
+  struct has_postinsert_trait<AssociationMap<T> >  { 
+    static bool const value = true; 
+  }; 
 }
 
 #endif

@@ -1,4 +1,4 @@
-// $Id: testOneToOneAssociation.cc,v 1.8 2006/06/08 13:02:38 llista Exp $
+// $Id: testOneToOneAssociation.cc,v 1.12 2006/09/04 09:12:42 llista Exp $
 #include <cppunit/extensions/HelperMacros.h>
 #include <algorithm>
 #include <iterator>
@@ -37,6 +37,8 @@ void  testOneToOneAssociation::dummy() {
   Assoc::const_iterator b = v.begin(), e = v.end();
   b++; e++;
   Assoc::const_iterator f = v.find( edm::Ref<CKey>() );
+  v.numberOfAssociations( edm::Ref<CKey>() );
+  const edm::Ref<CVal> & x = v[ edm::Ref<CKey>() ]; x.id();
   f++;
   int n = v.numberOfAssociations( edm::Ref<CKey>() );
   n++;
@@ -44,4 +46,6 @@ void  testOneToOneAssociation::dummy() {
   v[ edm::Ref<CKey>() ];
   v.erase( edm::Ref<CKey>() );
   v.clear();
+  CPPUNIT_ASSERT( v.size() == 0 );
+  v.post_insert();
 }
