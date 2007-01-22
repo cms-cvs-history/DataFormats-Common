@@ -22,6 +22,6 @@ void work()
 int main()
 {
   try  { work(); }
-  catch ( ... ) { return 1; }
+  catch (...) { return 1; }
   return 0;
 }
