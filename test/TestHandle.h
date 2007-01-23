@@ -2,10 +2,10 @@
 #define Common_TestHandle_h
 
 /*----------------------------------------------------------------------
-  
-$Id: TestHandle.h,v 1.3 2006/08/10 22:38:45 wmtan Exp $
 
-Version of Handle 
+$Id: TestHandle.h,v 1.4 2006/08/30 23:28:34 wmtan Exp $
+
+Version of Handle
 
 ----------------------------------------------------------------------*/
 
@@ -61,11 +61,11 @@ namespace edm {
   template <class T>
   TestHandle<T>::TestHandle(T const* theProduct, ProductID const& theId) :
     prod_(theProduct),
-    id_(theId) { 
+    id_(theId) {
   }
 
   template <class T>
-  TestHandle<T>::~TestHandle() { 
+  TestHandle<T>::~TestHandle() {
     // Nothing to do -- we do not own the things to which we point.
   }
 
@@ -91,25 +91,25 @@ namespace edm {
   }
 
   template <class T>
-  T const* 
+  T const*
   TestHandle<T>::product() const {
     return prod_;
   }
 
   template <class T>
-  T const* 
+  T const*
   TestHandle<T>::operator->() const {
     return product();
   }
 
   template <class T>
-  T const& 
+  T const&
   TestHandle<T>::operator*() const {
     return *product();
   }
 
   template <class T>
-  ProductID 
+  ProductID
   TestHandle<T>::id() const {
     return id_;
   }
@@ -118,7 +118,7 @@ namespace edm {
   template <class T>
   inline
   void
-  swap(TestHandle<T>& a, TestHandle<T>& b) 
+  swap(TestHandle<T>& a, TestHandle<T>& b)
   {
     a.swap(b);
   }

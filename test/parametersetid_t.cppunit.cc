@@ -149,13 +149,13 @@ void testParameterSetID::oldRootFileCompatibilityTest()
   //simulate what ROOT does when reading an old ParameterSetID which has 32 characters
   ParameterSetID dflt(default_id_string);
   std::string sValue(default_id_string);
-  ParameterSetID* evil( reinterpret_cast<ParameterSetID*>(&sValue));
+  ParameterSetID* evil(reinterpret_cast<ParameterSetID*>(&sValue));
 
   CPPUNIT_ASSERT(not evil->isCompactForm());
-  CPPUNIT_ASSERT( dflt.isCompactForm());
+  CPPUNIT_ASSERT(dflt.isCompactForm());
 
   ParameterSetID evilCopy(*evil);
-  CPPUNIT_ASSERT( evilCopy.isCompactForm());
+  CPPUNIT_ASSERT(evilCopy.isCompactForm());
   
   CPPUNIT_ASSERT(dflt == evilCopy);
   CPPUNIT_ASSERT(evilCopy == *evil);
@@ -178,13 +178,13 @@ void testParameterSetID::oldRootFileCompatibilityTest()
   char buffer[3];
   buffer[2]=0;
   std::string theOldValue("00000000000000000000000000000000");
-  ParameterSetID theOldHash( theOldValue);
-  for( const char* itHigh= hexbits; itHigh != hexbits+nHexBits; ++itHigh) {
+  ParameterSetID theOldHash(theOldValue);
+  for(const char* itHigh= hexbits; itHigh != hexbits+nHexBits; ++itHigh) {
     const char* lowStart = hexbits;
-    if( itHigh == hexbits) {
+    if(itHigh == hexbits) {
       lowStart +=1;
     }
-    for( const char* itLow=lowStart; itLow != hexbits+nHexBits; ++itLow) {
+    for(const char* itLow=lowStart; itLow != hexbits+nHexBits; ++itLow) {
       buffer[0]=*itHigh;
       buffer[1]=*itLow;
       std::string theValue(buffer);
@@ -198,8 +198,8 @@ void testParameterSetID::oldRootFileCompatibilityTest()
       ParameterSetID theHash(theValue);
       CPPUNIT_ASSERT(theOldHash < theHash);
       
-      ParameterSetID* theEvil( reinterpret_cast<ParameterSetID*>(&theValue));
-      ParameterSetID* theOldEvil( reinterpret_cast<ParameterSetID*>(&theOldValue));
+      ParameterSetID* theEvil(reinterpret_cast<ParameterSetID*>(&theValue));
+      ParameterSetID* theOldEvil(reinterpret_cast<ParameterSetID*>(&theOldValue));
       CPPUNIT_ASSERT(*theOldEvil < *theEvil);
       CPPUNIT_ASSERT(*theOldEvil < theHash);
       CPPUNIT_ASSERT(theOldHash < *theEvil);
