@@ -1,5 +1,6 @@
 // Test of the ReflexTools functions.
 
+#include <iostream>
 #include <typeinfo>
 #include <vector>
 
@@ -7,10 +8,13 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "Reflex/Type.h"
+
+#include "DataFormats/Common/interface/RefVector.h"
 #include "DataFormats/Common/interface/ReflexTools.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 using ROOT::Reflex::Type;
+using ROOT::Reflex::TypeTemplate;
 
 class TestReflex: public CppUnit::TestFixture
 {
@@ -24,6 +28,8 @@ class TestReflex: public CppUnit::TestFixture
   CPPUNIT_TEST(wrapper_type_failure);
   CPPUNIT_TEST(sequence_wrapper);
   CPPUNIT_TEST(sequence_wrapper_failure);
+  CPPUNIT_TEST(special_refvector_support);
+  CPPUNIT_TEST(primary_template_id);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -41,6 +47,8 @@ class TestReflex: public CppUnit::TestFixture
   void wrapper_type_failure();
   void sequence_wrapper();
   void sequence_wrapper_failure();
+  void special_refvector_support();
+  void primary_template_id();
 
  private:
 };
@@ -149,4 +157,34 @@ void TestReflex::sequence_wrapper_failure()
   CPPUNIT_ASSERT(!edm::is_sequence_wrapper(wrapper_of_nonsequence,
 					   no_such_value_type));
   CPPUNIT_ASSERT(!no_such_value_type);
+}
+
+void TestReflex::special_refvector_support()
+{
+  typedef std::vector<int> vector_t;
+  typedef edm::RefVector<vector_t> refvector_t;
+  typedef edm::Wrapper<refvector_t> wrapper_t;
+  Type wrapper(Type::ByTypeInfo(typeid(wrapper_t)));
+  CPPUNIT_ASSERT(wrapper);
+  Type wrapped_type;
+  CPPUNIT_ASSERT(edm::is_sequence_wrapper(wrapper, wrapped_type));
+  //CPPUNIT_ASSERT(wrapped_type == Type::ByName("int"));
+}
+
+void TestReflex::primary_template_id()
+{
+  Type intvec(Type::ByName("std::vector<int>"));
+  TypeTemplate vec(intvec.TemplateFamily());
+
+  // The template std::vector has two template parameters, thus the
+  // '2' in the following line.
+  TypeTemplate standard_vec(TypeTemplate::ByName("std::vector",2));
+  CPPUNIT_ASSERT(!standard_vec);
+  CPPUNIT_ASSERT(vec != standard_vec);
+
+  // Reflex in use by CMS as of 26 Feb 2007 understands vector to have
+  // one template parameter; this is not standard.
+  TypeTemplate nonstandard_vec(TypeTemplate::ByName("std::vector",1));
+  CPPUNIT_ASSERT(nonstandard_vec);
+  CPPUNIT_ASSERT(vec == nonstandard_vec);
 }
