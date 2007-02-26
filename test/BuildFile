@@ -11,5 +11,6 @@
 <bin file=ProcessHistory_t.cpp></bin>
 <bin file=ProcessConfiguration_t.cpp></bin>
 <bin file=Wrapper_t.cpp></bin>
+<bin file=ReflexTools_t.cpp></bin>
 
 
