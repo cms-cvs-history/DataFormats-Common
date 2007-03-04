@@ -10,7 +10,7 @@
 #include "Reflex/Type.h"
 
 #include "DataFormats/Common/interface/RefVector.h"
-#include "DataFormats/Common/interface/ReflexTools.h"
+#include "FWCore/Utilities/interface/ReflexTools.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 using ROOT::Reflex::Type;
