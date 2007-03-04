@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: TestHandle.h,v 1.4 2006/08/30 23:28:34 wmtan Exp $
+$Id: TestHandle.h,v 1.5 2007/01/23 00:25:53 wmtan Exp $
 
 Version of Handle
 
@@ -13,7 +13,7 @@ Version of Handle
 #include <stdexcept>
 #include <typeinfo>
 
-#include "DataFormats/Common/interface/ProductID.h"
+#include "DataFormats/Provenance/interface/ProductID.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 
 namespace edm {

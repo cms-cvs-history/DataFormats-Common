@@ -2,15 +2,13 @@
 <use name=cppunit>
 <use name=DataFormats/Common>
 
-<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToOneAssociation.cc,testValueMap.cc,testOneToManyAssociation.cc,testAssociationVector.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,eventid_t.cppunit.cc,timestamp_t.cppunit.cc,parametersetid_t.cppunit.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc,reftobase_t.cppunit.cc,cloningptr_t.cppunit.cc >
+<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToOneAssociation.cc,testValueMap.cc,testOneToManyAssociation.cc,testAssociationVector.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc,reftobase_t.cppunit.cc,cloningptr_t.cppunit.cc >
 </bin>
-<bin file=DetSetVector_t.cpp></bin>
-<bin file=OwnVector_t.cpp></bin>
-
-<bin file=ModuleDescription_t.cpp></bin>
-<bin file=ProcessHistory_t.cpp></bin>
-<bin file=ProcessConfiguration_t.cpp></bin>
-<bin file=Wrapper_t.cpp></bin>
-<bin file=ReflexTools_t.cpp></bin>
+<bin file=DetSetVector_t.cpp> </bin>
+<bin file=OwnVector_t.cpp> </bin>
+<bin file=ReflexTools_t.cpp>
+<use name=rootrflx>
+</bin>
+<bin file=Wrapper_t.cpp> </bin>
 
 
