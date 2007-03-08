@@ -28,8 +28,9 @@ class TestReflex: public CppUnit::TestFixture
   CPPUNIT_TEST(wrapper_type_failure);
   CPPUNIT_TEST(sequence_wrapper);
   CPPUNIT_TEST(sequence_wrapper_failure);
-  CPPUNIT_TEST(special_refvector_support);
   CPPUNIT_TEST(primary_template_id);
+  CPPUNIT_TEST(not_a_template_instance);
+  CPPUNIT_TEST(special_refvector_support);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -47,8 +48,9 @@ class TestReflex: public CppUnit::TestFixture
   void wrapper_type_failure();
   void sequence_wrapper();
   void sequence_wrapper_failure();
-  void special_refvector_support();
   void primary_template_id();
+  void not_a_template_instance();
+  void special_refvector_support();
 
  private:
 };
@@ -159,18 +161,6 @@ void TestReflex::sequence_wrapper_failure()
   CPPUNIT_ASSERT(!no_such_value_type);
 }
 
-void TestReflex::special_refvector_support()
-{
-  typedef std::vector<int> vector_t;
-  typedef edm::RefVector<vector_t> refvector_t;
-  typedef edm::Wrapper<refvector_t> wrapper_t;
-  Type wrapper(Type::ByTypeInfo(typeid(wrapper_t)));
-  CPPUNIT_ASSERT(wrapper);
-  Type wrapped_type;
-  CPPUNIT_ASSERT(edm::is_sequence_wrapper(wrapper, wrapped_type));
-  //CPPUNIT_ASSERT(wrapped_type == Type::ByName("int"));
-}
-
 void TestReflex::primary_template_id()
 {
   Type intvec(Type::ByName("std::vector<int>"));
@@ -188,3 +178,31 @@ void TestReflex::primary_template_id()
   CPPUNIT_ASSERT(nonstandard_vec);
   CPPUNIT_ASSERT(vec == nonstandard_vec);
 }
+
+void TestReflex::not_a_template_instance()
+{
+  Type not_a_template(Type::ByName("double"));
+  CPPUNIT_ASSERT(not_a_template);
+  TypeTemplate nonesuch(not_a_template.TemplateFamily());
+  CPPUNIT_ASSERT(!nonesuch);  
+}
+
+void TestReflex::special_refvector_support()
+{
+  typedef std::vector<int> vector_t;
+  typedef edm::RefVector<vector_t> refvector_t;
+  typedef edm::Wrapper<refvector_t> wrapper_t;
+  Type wrapper(Type::ByTypeInfo(typeid(wrapper_t)));
+  CPPUNIT_ASSERT(wrapper);
+  Type wrapped_type;
+  CPPUNIT_ASSERT(edm::is_sequence_wrapper(wrapper, wrapped_type));
+  if (wrapped_type != Type::ByName("int"))
+    {
+      std::cerr << "Failure in TestReflex::special_refvector_support\n"
+		<< "... wrapped_type is:  " << wrapped_type << '\n'
+		<< "... and it should be: " << Type::ByName("int")
+		<< std::endl;
+    }
+  CPPUNIT_ASSERT(wrapped_type == Type::ByName("int"));
+}
+
