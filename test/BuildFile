@@ -11,6 +11,10 @@
 </bin>
 <bin file=Wrapper_t.cpp> </bin>
 <bin file=traits_t.cpp>  </bin>
+<bin file=RefCore_t.cpp> </bin>
+<bin file=Ref_t.cpp> </bin>
 <bin file=RefVector_t.cpp> </bin>
+
+
 
 
