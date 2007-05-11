@@ -5,7 +5,7 @@
   
 Ref: A template for an interproduct reference to a product.
 
-$Id: RefProd.h,v 1.8 2007/03/23 16:54:31 paterno Exp $
+$Id: RefProd.h,v 1.6 2006/12/16 03:45:47 wmtan Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -37,34 +37,33 @@ $Id: RefProd.h,v 1.8 2007/03/23 16:54:31 paterno Exp $
     bool operator!() const;			// equivalent to !isNonnull()
 ----------------------------------------------------------------------*/ 
 
-#include "DataFormats/Common/interface/EDProductfwd.h"
 #include "DataFormats/Common/interface/RefCore.h"
-#include "DataFormats/Provenance/interface/ProductID.h"
+#include "DataFormats/Common/interface/ProductID.h"
 
 namespace edm {
-
-  template <typename C>
+  template <typename T, typename V, typename F> class Ref;
+  template <typename T>
   class RefProd {
   public:
-    typedef C product_type;
+    typedef T product_type;
 
     /// Default constructor needed for reading from persistent store. Not for direct use.
     RefProd() : product_() {}
 
-    /// General purpose constructor from handle-like object.
+    /// General purpose constructor from handle like object.
     // The templating is artificial.
-    // HandleC must have the following methods:
-    //   id(),      returning a ProductID,
-    //   product(), returning a C*.
-    template <class HandleC>
-    explicit RefProd(HandleC const& handle) :
+    // HandleT must have the following methods:
+    // id(), returning a ProductID,
+    // product(), returning a T*.
+    template <class HandleT>
+    explicit RefProd(HandleT const& handle) :
     product_(handle.id(), handle.product(), 0) {
       checkTypeAtCompileTime(handle.product());
     }
 
-    /// Constructor from Ref<C,T,F>
-    template <typename T, typename F>
-    explicit RefProd(Ref<C, T, F> const& ref);
+    /// Constructor from Ref.
+    template <typename V, typename F>
+    explicit RefProd(Ref<T, V, F> const& ref);
 
     // Constructor for those users who do not have a product handle,
     // but have a pointer to a product getter (such as the EventPrincipal).
@@ -77,20 +76,20 @@ namespace edm {
     ~RefProd() {}
 
     /// Dereference operator
-    C const&  operator*() const {return *(product_.template getProduct<C>());}
+    T const&  operator*() const {return *getProduct<T>(product_);}
 
     /// Member dereference operator
-    C const* operator->() const {return product_.template getProduct<C>();} 
+    T const* operator->() const {return getProduct<T>(product_);} 
 
     /// Returns C++ pointer to the product
     /// Will attempt to retrieve product
-    C const* get() const {
+    T const* get() const {
       return isNull() ? 0 : this->operator->();
     }
 
     /// Returns C++ pointer to the product
     /// Will attempt to retrieve product
-    C const* product() const {
+    T const* product() const {
       return isNull() ? 0 : this->operator->();
     }
 
@@ -99,13 +98,13 @@ namespace edm {
     }
 
     /// Checks for null
-    bool isNull() const {return !isNonnull(); }
+    bool isNull() const {return id() == ProductID();}
 
     /// Checks for non-null
-    bool isNonnull() const {return id().isValid(); }
+    bool isNonnull() const {return !isNull();}
 
     /// Checks for null
-    bool operator!() const {return isNull(); }
+    bool operator!() const {return isNull();}
 
     /// Accessor for product ID.
     ProductID id() const {return product_.id();}
@@ -117,9 +116,9 @@ namespace edm {
     bool hasCache() const {return product_.productPtr() != 0;}
 
   private:
-    // Compile time check that the argument is a C* or C const*
+    // Compile time check that the argument is a T* or T const*
     // or derived from it.
-    void checkTypeAtCompileTime(C const* ptr) {}
+    void checkTypeAtCompileTime(T const* ptr) {}
 
     RefCore product_;
   };
@@ -130,34 +129,31 @@ namespace edm {
 namespace edm {
 
   /// Constructor from Ref.
-  template <typename C>
-  template <typename T, typename F>
+  template <typename T>
+  template <typename V, typename F>
   inline
-  RefProd<C>::RefProd(Ref<C, T, F> const& ref) :
-      product_(ref.id(), 
-	       ref.hasProductCache() ? 
-	       ref.product() : 
-	       0, ref.productGetter()) 
-  {  }
+  RefProd<T>::RefProd(Ref<T, V, F> const& ref) :
+      product_(ref.id(), ref.hasProductCache() ? ref.product() : 0, ref.productGetter()) {
+  }
 
-  template <typename C>
+  template <typename T>
   inline
   bool
-  operator== (RefProd<C> const& lhs, RefProd<C> const& rhs) {
+  operator==(RefProd<T> const& lhs, RefProd<T> const& rhs) {
     return lhs.refCore() == rhs.refCore();
   }
 
-  template <typename C>
+  template <typename T>
   inline
   bool
-  operator!= (RefProd<C> const& lhs, RefProd<C> const& rhs) {
+  operator!=(RefProd<T> const& lhs, RefProd<T> const& rhs) {
     return !(lhs == rhs);
   }
 
-  template <typename C>
+  template <typename T>
   inline
   bool
-  operator< (RefProd<C> const& lhs, RefProd<C> const& rhs) {
+  operator<(RefProd<T> const& lhs, RefProd<T> const& rhs) {
     return (lhs.refCore() < rhs.refCore());
   }
 }
