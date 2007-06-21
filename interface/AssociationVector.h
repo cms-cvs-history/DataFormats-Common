@@ -9,7 +9,7 @@
  *
  * \author Luca Lista, INFN
  *
- * \version $Revision: 1.16.2.1 $
+ * \version $Revision: 1.16.2.2 $
  */
 
 #include "FWCore/Utilities/interface/EDMException.h"
@@ -24,12 +24,11 @@
 
 namespace edm {
 
-  template<typename KeyRefProd, typename CVal, 
-    typename KeyRef=edm::Ref<typename KeyRefProd::product_type>,
-    typename SizeType=typename KeyRefProd::product_type::size_type>
+  template<typename KeyRefProd, typename CVal> 
   class AssociationVector {
-    BOOST_STATIC_ASSERT( ( boost::is_same<SizeType, typename CVal::size_type>::value ) );
-    typedef AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> self;
+    typedef AssociationVector<KeyRefProd, CVal> self;
+    typedef size_t SizeType;
+    typedef edm::Ref<typename KeyRefProd::product_type> KeyRef;
 
   public:
     typedef typename KeyRefProd::product_type CKey;
@@ -84,25 +83,25 @@ namespace edm {
     }
   };
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::AssociationVector() : 
+  template<typename KeyRefProd, typename CVal>
+  inline AssociationVector<KeyRefProd, CVal>::AssociationVector() : 
     data_(), ref_(), transientVector_(), fixed_(false)  { }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::AssociationVector(KeyRefProd ref) : 
+  template<typename KeyRefProd, typename CVal>
+  inline AssociationVector<KeyRefProd, CVal>::AssociationVector(KeyRefProd ref) : 
     data_(ref->size()), ref_(ref), transientVector_(ref->size()), fixed_(true) { }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::
-    AssociationVector(const AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> & o) : 
+  template<typename KeyRefProd, typename CVal>
+  inline AssociationVector<KeyRefProd, CVal>::
+    AssociationVector(const AssociationVector<KeyRefProd, CVal> & o) : 
     data_(o.data_), ref_(o.ref_), transientVector_(o.transientVector_), fixed_(o.fixed_) { }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::~AssociationVector() { }
+  template<typename KeyRefProd, typename CVal>
+  inline AssociationVector<KeyRefProd, CVal>::~AssociationVector() { }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> & 
-  AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::operator=(const self & o) {
+  template<typename KeyRefProd, typename CVal>
+  inline AssociationVector<KeyRefProd, CVal> & 
+  AssociationVector<KeyRefProd, CVal>::operator=(const self & o) {
     data_ = o.data_;
     ref_ = o.ref_;
     transientVector_ = o.transientVector_;
@@ -110,20 +109,20 @@ namespace edm {
     return * this;
   }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline typename AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::size_type 
-    AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::size() const {
+  template<typename KeyRefProd, typename CVal>
+  inline typename AssociationVector<KeyRefProd, CVal>::size_type 
+    AssociationVector<KeyRefProd, CVal>::size() const {
     return data_.size();
   }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline bool AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::empty() const {
+  template<typename KeyRefProd, typename CVal>
+  inline bool AssociationVector<KeyRefProd, CVal>::empty() const {
     return data_.empty();
   }
   
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
+  template<typename KeyRefProd, typename CVal>
   inline const typename CVal::value_type &
-  AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::operator[]( const KeyRef & k ) const {
+  AssociationVector<KeyRefProd, CVal>::operator[]( const KeyRef & k ) const {
     if ( k.id() != ref_.id() )
       throw edm::Exception(edm::errors::InvalidReference) 
 	<< "AssociationVector: trying to use [] operator passing a reference"
@@ -131,9 +130,9 @@ namespace edm {
     return data_[ k.key() ];
   }
 
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
+  template<typename KeyRefProd, typename CVal>
   inline typename CVal::value_type &
-  AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::operator[]( const KeyRef & k ) {
+  AssociationVector<KeyRefProd, CVal>::operator[]( const KeyRef & k ) {
     if ( k.id() != ref_.id() )
       throw edm::Exception(edm::errors::InvalidReference) 
 	<< "AssociationVector: trying to use [] operator passing a reference"
@@ -141,32 +140,32 @@ namespace edm {
     return data_[ k.key() ];
   }
 
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline void AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::clear() {
+  template<typename KeyRefProd, typename CVal>
+  inline void AssociationVector<KeyRefProd, CVal>::clear() {
     data_.clear();
     transientVector_.clear();
     ref_ = KeyRefProd();
     fixed_ = true;
   }
 
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline void AssociationVector<KeyRefProd, CVal, KeyRef, SizeType>::swap(self & other) {
+  template<typename KeyRefProd, typename CVal>
+  inline void AssociationVector<KeyRefProd, CVal>::swap(self & other) {
     data_.swap(other.data_);
     transientVector_.swap(other.transientVector_);
     std::swap(ref_, other.ref_);
     std::swap(fixed_, other.fixed_);
   }
 
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  inline void swap(AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> & a, 
-		   AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> & b) {
+  template<typename KeyRefProd, typename CVal>
+  inline void swap(AssociationVector<KeyRefProd, CVal> & a, 
+		   AssociationVector<KeyRefProd, CVal> & b) {
     a.swap(b);
   }
 
 #if ! GCC_PREREQUISITE(3,4,4)
   // has swap function
-  template<typename KeyRefProd, typename CVal, typename KeyRef, typename SizeType>
-  struct has_swap<edm::AssociationVector<KeyRefProd, CVal, KeyRef, SizeType> > {
+  template<typename KeyRefProd, typename CVal>
+  struct has_swap<edm::AssociationVector<KeyRefProd, CVal> > {
     static bool const value = true;
   };
 #endif
