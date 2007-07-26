@@ -16,8 +16,6 @@ namespace edm {
     
     typedef unsigned int id_type;
     typedef unsigned short data_type;
-    typedef data_type * iterator;
-    typedef data_type const * const_iterator;
     
     
     inline
@@ -30,31 +28,16 @@ namespace edm {
     DataFrame(DataFrameContainer const & icont,
 	      size_t i);
     inline
-    void set(DataFrameContainer const & icont,
-	     size_t i);
-    inline
     data_type & operator[](size_t i) {
       return data()[i];
     }
+    
     
     inline
     data_type operator[](size_t i) const {
       return m_data[i];
     }
     
-    inline
-    iterator begin() { return data();}
-
-    inline
-    iterator end() { return data()+m_size;}
-
-    inline
-    const_iterator begin() const { return m_data;}
-
-    inline
-    const_iterator end() const { return m_data+m_size;}
-
-
     inline
     id_type id() const { return m_id;}
     

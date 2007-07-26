@@ -23,7 +23,6 @@ namespace edm {
    */
   class DataFrameContainer {
   public:
-    typedef unsigned int size_type; // for persistency
     typedef unsigned int id_type;
     typedef unsigned short data_type;
     typedef std::vector<id_type> IdContainer;
@@ -39,21 +38,19 @@ namespace edm {
       typedef DataFrame result_type;
       IterHelp(DataFrameContainer const & iv) : v(iv){}
       
-      DataFrame const & operator()(int i) const {
-	frame.set(v,i);
-	return frame;
+      DataFrame operator()(int i) const {
+	return DataFrame(v,i);
       } 
     private:
       DataFrameContainer const & v;
-      mutable DataFrame frame;
     };
     
     typedef boost::transform_iterator<IterHelp,boost::counting_iterator<int> > const_iterator;
     
     DataFrameContainer(){}
     
-    explicit DataFrameContainer(size_t istride, int isubdet=0, size_t isize=0) :
-      m_subdetId(isubdet), m_stride(istride),
+    explicit DataFrameContainer(size_t istride, size_t isize=0) :
+      m_stride(istride),
       m_ids(isize), m_data(isize*m_stride){}
     
     void swap(DataFrameContainer & rh) {
@@ -102,12 +99,6 @@ namespace edm {
       size_t cs = m_data.size()-m_stride;
       std::copy(idata,idata+m_stride,m_data.begin()+cs);
     }
-
-    DataFrame back() {
-      return DataFrame(*this,size()-1);
-    }
-
-
     //---------------------------------------------------------
     
     IterPair pair(size_t i) {
@@ -144,11 +135,9 @@ namespace edm {
     }
     
     
-    int subdetId() const { return m_subdetId; }
-
-    size_type stride() const { return m_stride; }
+    size_t stride() const { return m_stride; }
     
-    size_type size() const { return m_ids.size();}
+    size_t size() const { return m_ids.size();}
     
     data_type operator()(size_t cell, size_t frame) const {
       return m_data[cell*m_stride+frame];
@@ -166,11 +155,8 @@ namespace edm {
     // DataContainer const & data() const { return  m_data;}
     
   private:
-    // subdetector id (as returned by  DetId::subdetId())
-    int m_subdetId;
-
     // can be a enumerator, or a template argument
-    size_type m_stride;
+    size_t m_stride;
     
     IdContainer m_ids;
     DataContainer m_data;
@@ -181,14 +167,6 @@ namespace edm {
   DataFrame::DataFrame(DataFrameContainer const & icont,
 		       size_t i) :
     m_id(icont.id(i)), m_data(icont.frame(i)), m_size(icont.stride()){}
-
-  inline
-  void DataFrame::set(DataFrameContainer const & icont,
-		      size_t i) {
-    m_id=icont.id(i); 
-    m_data=icont.frame(i);
-    m_size=icont.stride();
-  }
   
 }
 

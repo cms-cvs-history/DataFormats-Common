@@ -14,9 +14,6 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/FillView.h"
-#include "DataFormats/Common/interface/DataFrame.h"
-#include "DataFormats/Common/interface/DataFrameContainer.h"
-
 #include <map>
 #include <vector>
 #include <list>
@@ -82,7 +79,6 @@ namespace {
   edm::Wrapper<std::map<int,std::pair<unsigned int,unsigned int> > > dummyypwmv9;
   edm::Wrapper<std::map<int,std::pair<unsigned long,unsigned long> > > dummyypwmv10;
 
-  edm::Wrapper<edm::DataFrameContainer> dummywdfc;
 
   edm::Wrapper<unsigned long> dummyw1;
   edm::Wrapper<unsigned int> dummyw2;
