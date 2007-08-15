@@ -17,6 +17,8 @@
 <bin file=DataFrame_t.cpp> </bin>
 <bin file=DetSetNew_t.cpp> </bin>
 <bin file=exDSTV.cpp> </bin>
+<bin file=Trie_t.cpp> </bin>
+<bin file=exTrie.cpp> </bin>
 
 
 
