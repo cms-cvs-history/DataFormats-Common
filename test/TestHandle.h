@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: TestHandle.h,v 1.6 2007/03/04 05:08:32 wmtan Exp $
+$Id: TestHandle.h,v 1.7 2007/07/09 07:28:52 llista Exp $
 
 Version of Handle
 
@@ -20,7 +20,7 @@ namespace edm {
   template <class T>
   class TestHandle {
   public:
-    typedef T product_type;
+    typedef T element_type;
     // Default constructed handles are invalid.
     TestHandle();
 
