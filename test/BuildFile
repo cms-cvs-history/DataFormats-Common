@@ -2,13 +2,12 @@
 <use name=cppunit>
 <use name=DataFormats/Common>
 
-<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToOneAssociation.cc,testValueMap.cc,testOneToManyAssociation.cc,testAssociationVector.cct,testAssociationNew.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc,reftobase_t.cppunit.cc,reftobasevector_t.cppunit.cc,cloningptr_t.cppunit.cc, ptr_t.cppunit.cc >
-</bin>
+<bin name=testDataFormatsCommon file=testRunner.cpp,testOwnVector.cc,testOneToOneAssociation.cc,testValueMap.cc,testOneToManyAssociation.cc,testAssociationVector.cc,testAssociationNew.cc,testValueMapNew.cc,testSortedCollection.cc,testRangeMap.cc,testIDVectorMap.cc,ref_t.cppunit.cc,DetSetRefVector_t.cppunit.cc,DetSetLazyVector_t.cppunit.cc,reftobase_t.cppunit.cc,reftobasevector_t.cppunit.cc,cloningptr_t.cppunit.cc,ptr_t.cppunit.cc> </bin>
 <bin file=DetSetVector_t.cpp> </bin>
 <bin file=OwnVector_t.cpp> </bin>
 <bin file=ReflexTools_t.cpp>
-<use name=rootrflx>
-<use name=DataFormats/WrappedStdDictionaries>
+  <use name=rootrflx>
+  <use name=DataFormats/WrappedStdDictionaries>
 </bin>
 <bin file=Wrapper_t.cpp> </bin>
 <bin file=traits_t.cpp>  </bin>

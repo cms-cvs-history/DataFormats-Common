@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: TestHandle.h,v 1.7 2007/07/09 07:28:52 llista Exp $
+$Id: TestHandle.h,v 1.8 2007/09/12 10:05:58 llista Exp $
 
 Version of Handle
 
@@ -74,7 +74,7 @@ namespace edm {
   void
   TestHandle<T>::swap(TestHandle<T>& other) {
     std::swap(prod_, other.prod_);
-    swap(id_, other.id_);
+    std::swap(id_, other.id_);
   }
 
   template <class T>
