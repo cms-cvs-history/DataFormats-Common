@@ -6,7 +6,7 @@
 RefVector: A template for a vector of interproduct references.
 	Each vector element is a reference to a member of the same product.
 
-$Id: RefVector.h,v 1.32 2007/10/22 18:55:40 chrjones Exp $
+$Id: RefVector.h,v 1.35 2008/01/29 08:07:46 llista Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -55,7 +55,7 @@ namespace edm {
     /// store. Not for direct use.
     RefVector() : refVector_() {}
 
-    RefVector( ProductID const & id ) : refVector_(id) {}
+    RefVector(ProductID const & id) : refVector_(id) {}
     /// Add a Ref<C, T> to the RefVector
     void push_back(value_type const& ref) 
     {refVector_.pushBack(ref.ref().refCore(), ref.ref().item());}
@@ -118,6 +118,9 @@ namespace edm {
     /// in the Event. No type checking is done.
     bool isAvailable() const {return refVector_.refCore().isAvailable();}
 
+    /// Checks if product collection is tansient (i.e. non persistable)
+    bool istransient() const {return refVector_.refCore().isTransient();}
+
     /// Erase an element from the vector.
     iterator erase(iterator const& pos);
 
@@ -126,6 +129,9 @@ namespace edm {
 
     /// Swap two vectors.
     void swap(RefVector<C, T, F> & other);
+
+    /// Copy assignment.
+    RefVector& operator=(RefVector const& rhs);
 
     void fillView(ProductID const& id,
 		  std::vector<void const*>& pointers,		 
@@ -140,6 +146,15 @@ namespace edm {
   void
   RefVector<C, T, F>::swap(RefVector<C, T, F> & other) {
     refVector_.swap(other.refVector_);
+  }
+
+  template <typename C, typename T, typename F>
+  inline
+  RefVector<C, T, F>&
+  RefVector<C, T, F>::operator=(RefVector<C, T, F> const& rhs) {
+    RefVector<C, T, F> temp(rhs);
+    this->swap(temp);
+    return *this;
   }
 
   template <typename C, typename T, typename F>
@@ -173,7 +188,7 @@ namespace edm {
     for (const_iterator i=begin(), e=end(); i!=e; ++i, ++key) {
       member_type const* address = i->isNull() ? 0 : &**i;
       pointers.push_back(address);
-      holder_type h(ref_type(id, address, key, product() ));
+      holder_type h(ref_type(i->id(), address, i->key(), product() ));
       helpers.push_back( & h );	
     }
   }
