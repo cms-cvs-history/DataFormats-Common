@@ -23,6 +23,8 @@ If failedToGet() returns true then the requested data is not available
 If failedToGet() returns false but isValid() is also false then no attempt 
   to get data has occurred
 
+$Id: Handle.h,v 1.10 2007/10/05 21:55:55 chrjones Exp $
+
 ----------------------------------------------------------------------*/
 
 #include <typeinfo>
@@ -103,6 +105,7 @@ namespace edm
   { 
       assert(prod_);
       assert(prov_);
+      assert(id_.isValid());
   }
 
   template <class T>

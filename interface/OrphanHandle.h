@@ -19,6 +19,8 @@ OrphanHandles can have:
 
 To check validity, one can use the isValid() function.
 
+$Id: OrphanHandle.h,v 1.6 2007/10/27 11:31:52 elmer Exp $
+
 ----------------------------------------------------------------------*/
 
 #include "DataFormats/Provenance/interface/ProductID.h"
@@ -79,6 +81,7 @@ namespace edm {
     prod_(prod),
     id_(theId) { 
       assert(prod_);
+      assert(id_.isValid());
   }
 
   template <class T>
