@@ -65,7 +65,7 @@ namespace edm {
   template <class T>
   OrphanHandle<T>::OrphanHandle() :
     prod_(0),
-    id_(0)
+    id_()
   { }
 
   template <class T>

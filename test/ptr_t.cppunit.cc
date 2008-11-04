@@ -80,7 +80,7 @@ void testPtr::constructTest() {
    CPPUNIT_ASSERT(!nulledP.isNonnull());
    CPPUNIT_ASSERT(!nulled.isAvailable());
 
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    {
      unsigned int const key = 2;
@@ -207,7 +207,7 @@ void testPtr::constructTest() {
 void testPtr::comparisonTest() {
 
  {
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    unsigned int const key = 2;
    Dummy const dummy;
@@ -240,7 +240,7 @@ void testPtr::comparisonTest() {
    CPPUNIT_ASSERT(dummyPtr1 < dummyPtrNewKey);
    CPPUNIT_ASSERT(!(dummyPtrNewKey < dummyPtr1));
 
-   ProductID const pidOther(4);
+   ProductID const pidOther(1, 4);
    OrphanHandle<DummyCollection> handleNewPID(&dummyContainer, pidOther);
    Ptr<Dummy> dummyPtrNewPID(handleNewPID, key);
    //PtrProd<DummyCollection> dummyPtrProdNewPID(handleNewPID);
@@ -255,7 +255,7 @@ void testPtr::comparisonTest() {
    
 {
    typedef std::map<int, double> DummyCollection2;
-   ProductID const pid2(2);
+   ProductID const pid2(1, 2);
    DummyCollection2 dummyContainer2;
    dummyContainer2.insert(std::make_pair(1, 1.0));
    dummyContainer2.insert(std::make_pair(2, 2.0));
@@ -267,7 +267,7 @@ void testPtr::comparisonTest() {
    CPPUNIT_ASSERT(!(dummyPtr22 < dummyPtr21));
 
    typedef std::map<int, double, std::greater<int> > DummyCollection3;
-   ProductID const pid3(3);
+   ProductID const pid3(1, 3);
    DummyCollection3 dummyContainer3;
    dummyContainer3.insert(std::make_pair(1, 1.0));
    dummyContainer3.insert(std::make_pair(2, 2.0));
@@ -306,7 +306,7 @@ void testPtr::getTest() {
    TestGetter tester;
    tester.hold_ = &wrapper;
 
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    IntCollection const* wptr = dynamic_cast<IntCollection const*>(wrapper.product());
 
@@ -339,7 +339,7 @@ void testPtr::getTest() {
      TestGetter tester;
      tester.hold_ = &wrapper;
      
-     ProductID const pid(1);
+     ProductID const pid(1, 1);
      
      SDCollection const* wptr = dynamic_cast<SDCollection const*>(wrapper.product());
      
@@ -362,7 +362,7 @@ void testPtr::getTest() {
    {
       TestGetter tester;
       tester.hold_ = 0;
-      ProductID const pid(1);
+      ProductID const pid(1, 1);
 
       Ptr<IntValue> ref0(pid, 0,&tester);
       CPPUNIT_ASSERT_THROW((*ref0),cms::Exception);

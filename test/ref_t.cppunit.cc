@@ -60,7 +60,7 @@ void testRef::constructTest() {
    CPPUNIT_ASSERT(nulledP.isNull());
    CPPUNIT_ASSERT(!nulledP.isNonnull());
 
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    unsigned int const key = 2;
    Dummy const dummy;
@@ -88,7 +88,7 @@ void testRef::constructTest() {
 void testRef::comparisonTest() {
 
  {
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    unsigned int const key = 2;
    Dummy const dummy;
@@ -121,7 +121,7 @@ void testRef::comparisonTest() {
    CPPUNIT_ASSERT(dummyRef1 < dummyRefNewKey);
    CPPUNIT_ASSERT(!(dummyRefNewKey < dummyRef1));
 
-   ProductID const pidOther(4);
+   ProductID const pidOther(1, 4);
    OrphanHandle<DummyCollection> handleNewPID(&dummyCollection, pidOther);
    Ref<DummyCollection> dummyRefNewPID(handleNewPID, key);
    RefProd<DummyCollection> dummyRefProdNewPID(handleNewPID);
@@ -134,7 +134,7 @@ void testRef::comparisonTest() {
  }
  {
    typedef std::map<int, double> DummyCollection2;
-   ProductID const pid2(2);
+   ProductID const pid2(1, 2);
    DummyCollection2 dummyCollection2;
    dummyCollection2.insert(std::make_pair(1, 1.0));
    dummyCollection2.insert(std::make_pair(2, 2.0));
@@ -146,7 +146,7 @@ void testRef::comparisonTest() {
    CPPUNIT_ASSERT(!(dummyRef22 < dummyRef21));
 
    typedef std::map<int, double, std::greater<int> > DummyCollection3;
-   ProductID const pid3(3);
+   ProductID const pid3(1, 3);
    DummyCollection3 dummyCollection3;
    dummyCollection3.insert(std::make_pair(1, 1.0));
    dummyCollection3.insert(std::make_pair(2, 2.0));
@@ -186,7 +186,7 @@ void testRef::getTest() {
    TestGetter tester;
    tester.hold_ = &wrapper;
 
-   ProductID const pid(1);
+   ProductID const pid(1, 1);
 
    IntCollection const* wptr = dynamic_cast<IntCollection const*>(wrapper.product());
 

@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: TestHandle.h,v 1.9 2007/10/30 13:43:38 llista Exp $
+$Id: TestHandle.h,v 1.1 2008/03/18 12:48:31 wmtan Exp $
 
 Version of Handle
 
@@ -50,7 +50,7 @@ namespace edm {
   template <class T>
   TestHandle<T>::TestHandle() :
     prod_(0),
-    id_(0)
+    id_()
   { }
 
   template <class T>

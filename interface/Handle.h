@@ -84,7 +84,7 @@ namespace edm
   Handle<T>::Handle() :
     prod_(0),
     prov_(0),
-    id_(0)
+    id_()
   { }
 
   template <class T>
@@ -109,7 +109,7 @@ namespace edm
     Handle<T>::Handle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
     prod_(0),
     prov_(0),
-    id_(0),
+    id_(),
     whyFailed_(iWhyFailed)
   { }
 
