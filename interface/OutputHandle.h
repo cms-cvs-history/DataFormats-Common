@@ -38,24 +38,24 @@ namespace edm {
     OutputHandle() :
       wrap_(0),
       desc_(0),
-      entryInfo_() {}
+      productProvenance_() {}
 
     OutputHandle(OutputHandle const& h) :
       wrap_(h.wrap_),
       desc_(h.desc_),
-      entryInfo_(h.entryInfo_),
+      productProvenance_(h.productProvenance_),
       whyFailed_(h.whyFailed_){}
 
-    OutputHandle(EDProduct const* prod, ConstBranchDescription const* desc, boost::shared_ptr<EventEntryInfo> entryInfo) :
+    OutputHandle(EDProduct const* prod, ConstBranchDescription const* desc, boost::shared_ptr<ProductProvenance> productProvenance) :
       wrap_(prod),
       desc_(desc),
-      entryInfo_(boost::shared_ptr<T>(new T(*entryInfo))) {}
+      productProvenance_(boost::shared_ptr<T>(new T(*productProvenance))) {}
 
     ///Used when the attempt to get the data failed
     OutputHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
       wrap_(0),
       desc_(0),
-      entryInfo_(),
+      productProvenance_(),
       whyFailed_(iWhyFailed) {}
     
     ~OutputHandle() {}
@@ -64,7 +64,7 @@ namespace edm {
       using std::swap;
       std::swap(wrap_, other.wrap_);
       std::swap(desc_, other.desc_);
-      std::swap(entryInfo_, other.entryInfo_);
+      std::swap(productProvenance_, other.productProvenance_);
       swap(whyFailed_,other.whyFailed_);
     }
 
@@ -76,7 +76,7 @@ namespace edm {
     }
 
     bool isValid() const {
-      return wrap_ && desc_ &&entryInfo_;
+      return wrap_ && desc_ &&productProvenance_;
     }
 
     bool failedToGet() const {
@@ -87,23 +87,16 @@ namespace edm {
       return wrap_;
     }
 
-    ProductID id() const {
-      if (!entryInfo_) {
-        return ProductID();
-      }
-      return entryInfo_->productID();
-    }
-
     boost::shared_ptr<cms::Exception> whyFailed() const {
       return whyFailed_;
     }
 
-    T const* entryInfo() const {
-      return entryInfo_.get();
+    T const* productProvenance() const {
+      return productProvenance_.get();
     }
 
-    boost::shared_ptr<T> entryInfoSharedPtr() const {
-      return entryInfo_;
+    boost::shared_ptr<T> productProvenanceSharedPtr() const {
+      return productProvenance_;
     }
 
     ConstBranchDescription const* desc() const {
@@ -113,7 +106,7 @@ namespace edm {
   private:
     EDProduct const* wrap_;
     ConstBranchDescription const* desc_;
-    boost::shared_ptr<T> entryInfo_;
+    boost::shared_ptr<T> productProvenance_;
     boost::shared_ptr<cms::Exception> whyFailed_;
   };
 

@@ -47,7 +47,7 @@ namespace edm
 
     Handle(const Handle<T>& h);
 
-    Handle(T const* prod, Provenance const* prov);
+    Handle(T const* prod, Provenance const* prov, ProductID const& id);
     
     Handle(const boost::shared_ptr<cms::Exception>&);
 
@@ -96,10 +96,10 @@ namespace edm
   { }
 
   template <class T>
-  Handle<T>::Handle(T const* prod, Provenance const* prov) :
+  Handle<T>::Handle(T const* prod, Provenance const* prov, ProductID const& id) :
     prod_(prod),
     prov_(prov),
-    id_(prov->productID())
+    id_(id)
   { 
       assert(prod_);
       assert(prov_);
@@ -237,7 +237,7 @@ namespace edm
       << "edm::Wrapper converting from EDProduct to "
       << typeid(*originalWrap).name();
 
-    Handle<T> h(wrap->product(), orig.provenance());
+    Handle<T> h(wrap->product(), orig.provenance(), orig.id());
     h.swap(result);
   }
 

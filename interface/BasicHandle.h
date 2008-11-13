@@ -23,7 +23,7 @@ If failedToGet() returns true then the requested data is not available
 If failedToGet() returns false but isValid() is also false then no attempt 
   to get data has occurred
 
-$Id: BasicHandle.h,v 1.6 2007/06/14 04:56:29 wmtan Exp $
+$Id: BasicHandle.h,v 1.7 2007/10/05 21:55:05 chrjones Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -38,21 +38,24 @@ namespace edm {
   public:
     BasicHandle() :
       wrap_(0),
-      prov_(0) {}
+      prov_(0),
+      id_() {}
 
     BasicHandle(BasicHandle const& h) :
       wrap_(h.wrap_),
       prov_(h.prov_),
+      id_(h.id_),
       whyFailed_(h.whyFailed_){}
 
-    BasicHandle(EDProduct const* prod, Provenance const* prov) :
-      wrap_(prod), prov_(prov) {
+    BasicHandle(EDProduct const* prod, Provenance const* prov, ProductID const& id) :
+      wrap_(prod), prov_(prov), id_(id) {
     }
 
     ///Used when the attempt to get the data failed
     BasicHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
     wrap_(0),
     prov_(0),
+    id_(),
     whyFailed_(iWhyFailed) {}
     
     ~BasicHandle() {}
@@ -61,6 +64,7 @@ namespace edm {
       using std::swap;
       std::swap(wrap_, other.wrap_);
       std::swap(prov_, other.prov_);
+      std::swap(id_, other.id_);
       swap(whyFailed_,other.whyFailed_);
     }
 
@@ -88,10 +92,7 @@ namespace edm {
     }
 
     ProductID id() const {
-      if (!prov_) {
-        return ProductID();
-      }
-      return prov_->productID();
+      return id_;
     }
 
     boost::shared_ptr<cms::Exception> whyFailed() const {
@@ -100,6 +101,7 @@ namespace edm {
   private:
     EDProduct const* wrap_;
     Provenance const* prov_;
+    ProductID id_;
     boost::shared_ptr<cms::Exception> whyFailed_;
   };
 
