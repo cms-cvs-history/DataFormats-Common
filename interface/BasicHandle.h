@@ -23,8 +23,6 @@ If failedToGet() returns true then the requested data is not available
 If failedToGet() returns false but isValid() is also false then no attempt 
   to get data has occurred
 
-$Id: BasicHandle.h,v 1.7 2007/10/05 21:55:05 chrjones Exp $
-
 ----------------------------------------------------------------------*/
 
 #include "DataFormats/Provenance/interface/Provenance.h"
@@ -37,7 +35,7 @@ namespace edm {
   class BasicHandle {
   public:
     BasicHandle() :
-      wrap_(0),
+      wrap_(),
       prov_(0),
       id_() {}
 
@@ -47,13 +45,13 @@ namespace edm {
       id_(h.id_),
       whyFailed_(h.whyFailed_){}
 
-    BasicHandle(EDProduct const* prod, Provenance const* prov, ProductID const& id) :
+    BasicHandle(boost::shared_ptr<EDProduct const> prod, Provenance const* prov, ProductID const& id) :
       wrap_(prod), prov_(prov), id_(id) {
     }
 
     ///Used when the attempt to get the data failed
     BasicHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
-    wrap_(0),
+    wrap_(),
     prov_(0),
     id_(),
     whyFailed_(iWhyFailed) {}
@@ -62,7 +60,7 @@ namespace edm {
 
     void swap(BasicHandle& other) {
       using std::swap;
-      std::swap(wrap_, other.wrap_);
+      swap(wrap_, other.wrap_);
       std::swap(prov_, other.prov_);
       std::swap(id_, other.id_);
       swap(whyFailed_,other.whyFailed_);
@@ -84,7 +82,7 @@ namespace edm {
     }
     
     EDProduct const* wrapper() const {
-      return wrap_;
+      return wrap_.get();
     }
 
     Provenance const* provenance() const {
@@ -99,7 +97,7 @@ namespace edm {
       return whyFailed_;
     }
   private:
-    EDProduct const* wrap_;
+    boost::shared_ptr<EDProduct const> wrap_;
     Provenance const* prov_;
     ProductID id_;
     boost::shared_ptr<cms::Exception> whyFailed_;
