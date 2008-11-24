@@ -35,23 +35,24 @@ namespace edm {
   class BasicHandle {
   public:
     BasicHandle() :
-      wrap_(),
+      product_(),
       prov_(0),
       id_() {}
 
     BasicHandle(BasicHandle const& h) :
-      wrap_(h.wrap_),
+      product_(h.product_),
       prov_(h.prov_),
       id_(h.id_),
       whyFailed_(h.whyFailed_){}
 
     BasicHandle(boost::shared_ptr<EDProduct const> prod, Provenance const* prov, ProductID const& id) :
-      wrap_(prod), prov_(prov), id_(id) {
+      product_(prod), prov_(prov), id_(id) {
+
     }
 
     ///Used when the attempt to get the data failed
     BasicHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
-    wrap_(),
+    product_(),
     prov_(0),
     id_(),
     whyFailed_(iWhyFailed) {}
@@ -60,7 +61,7 @@ namespace edm {
 
     void swap(BasicHandle& other) {
       using std::swap;
-      swap(wrap_, other.wrap_);
+      swap(product_, other.product_);
       std::swap(prov_, other.prov_);
       std::swap(id_, other.id_);
       swap(whyFailed_,other.whyFailed_);
@@ -74,7 +75,7 @@ namespace edm {
     }
 
     bool isValid() const {
-      return wrap_ && prov_;
+      return product_ && prov_;
     }
 
     bool failedToGet() const {
@@ -82,7 +83,11 @@ namespace edm {
     }
     
     EDProduct const* wrapper() const {
-      return wrap_.get();
+      return product_.get();
+    }
+
+    boost::shared_ptr<EDProduct const> product() const {
+      return product_;
     }
 
     Provenance const* provenance() const {
@@ -97,7 +102,7 @@ namespace edm {
       return whyFailed_;
     }
   private:
-    boost::shared_ptr<EDProduct const> wrap_;
+    boost::shared_ptr<EDProduct const> product_;
     Provenance const* prov_;
     ProductID id_;
     boost::shared_ptr<cms::Exception> whyFailed_;

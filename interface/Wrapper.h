@@ -189,7 +189,7 @@ namespace edm {
   template <typename T>
   struct DoAssign
   {
-    void operator()(T& a, T const& b) { a = b; }
+    void operator()(T& a, T& b) { a = b; }
   };
 
 #ifndef __REFLEX__
