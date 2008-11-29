@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Wed Oct 31 16:23:47 EDT 2007
-// $Id$
+// $Id: IntValues_reflex.cc,v 1.2 2008/11/28 17:44:48 wmtan Exp $
 //
 
 // system include files
@@ -16,9 +16,10 @@
 
 // user include files
 #include "DataFormats/Common/test/IntValues.h"
+#include "FWCore/Utilities/interface/UseReflex.h"
 
 namespace {
-  using namespace ROOT::Reflex;
+  using namespace Reflex;
   using namespace test_with_reflex;
   //Need Reflex dicctionaries for the conversion
   Type type_intvalue = TypeBuilder("IntValue");

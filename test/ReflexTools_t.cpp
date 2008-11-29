@@ -13,8 +13,8 @@
 #include "FWCore/Utilities/interface/ReflexTools.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
-using ROOT::Reflex::Type;
-using ROOT::Reflex::TypeTemplate;
+using Reflex::Type;
+using Reflex::TypeTemplate;
 
 class TestReflex: public CppUnit::TestFixture
 {
