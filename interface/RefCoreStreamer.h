@@ -39,8 +39,18 @@ namespace edm {
     EDProductGetter const* prodGetter_;
   };
 
+  class ProductIDStreamer : public TClassStreamer {
+  public:
+    explicit ProductIDStreamer(bool oldFormat) : cl_("edm::ProductID"), oldFormat_(oldFormat) {}
+    void operator() (TBuffer &R__b, void *objp);
+
+  private:
+    TClassRef cl_;
+    bool oldFormat_;
+  };
+
   void setRefCoreStreamer();
-  void setRefCoreStreamer(EDProductGetter const* ep);
+  void setRefCoreStreamer(EDProductGetter const* ep, bool oldFormat = false);
 }
 
 #endif
