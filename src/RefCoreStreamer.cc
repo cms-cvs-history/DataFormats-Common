@@ -16,7 +16,7 @@ namespace edm {
       ProductID pid;
       pid.oldID() = id;
       ProductID* obj = static_cast<ProductID *>(objp);
-      *obj = prodGetter_->oldToNewProductID(pid);
+      *obj = (prodGetter_ ? prodGetter_->oldToNewProductID(pid) : pid);
     } else {
       cl_->WriteBuffer(R__b, objp);
     }
@@ -30,7 +30,7 @@ namespace edm {
       obj->setProductGetter(prodGetter_);
       obj->setProductPtr(0);
     } else {
-      cl_->WriteBuffer(R__b, objp);
+      assert("RefCore streamer is obsolete" == 0);
     }
   }
 
@@ -52,21 +52,18 @@ namespace edm {
     }
   }
 
-  void setRefCoreStreamer() {
+  void resetRefCoreStreamer(bool oldFormat) {
     {
       TClass *cl = gROOT->GetClass("edm::RefCore::RefCoreTransients");
-      if (cl->GetStreamer() == 0) {
+      RefCoreTransientStreamer *st = static_cast<RefCoreTransientStreamer *>(cl->GetStreamer());
+      if (st == 0) {
         cl->AdoptStreamer(new RefCoreTransientStreamer(0));
+      } else {
+        st->setProductGetter(0);
       }
     }
-    {
+    if (oldFormat) {
       TClass *cl = gROOT->GetClass("edm::RefCore");
-      if (cl->GetStreamer() != 0) {
-        cl->AdoptStreamer(0);
-      }
-    }
-    {
-      TClass *cl = gROOT->GetClass("edm::ProductID");
       if (cl->GetStreamer() != 0) {
         cl->AdoptStreamer(0);
       }
@@ -74,21 +71,23 @@ namespace edm {
   }
 
   void setRefCoreStreamer(EDProductGetter const* ep, bool oldFormat) {
-    if (oldFormat) {
-      TClass *cl = gROOT->GetClass("edm::RefCore");
-      RefCoreStreamer *st = static_cast<RefCoreStreamer *>(cl->GetStreamer());
-      if (st == 0) {
-        cl->AdoptStreamer(new RefCoreStreamer(ep));
+    if (ep != 0) {
+      if (oldFormat) {
+        TClass *cl = gROOT->GetClass("edm::RefCore");
+        RefCoreStreamer *st = static_cast<RefCoreStreamer *>(cl->GetStreamer());
+        if (st == 0) {
+          cl->AdoptStreamer(new RefCoreStreamer(ep));
+        } else {
+          st->setProductGetter(ep);
+        }
       } else {
-        st->setProductGetter(ep);
-      }
-    } else {
-      TClass *cl = gROOT->GetClass("edm::RefCore::RefCoreTransients");
-      RefCoreTransientStreamer *st = static_cast<RefCoreTransientStreamer *>(cl->GetStreamer());
-      if (st == 0) {
-        cl->AdoptStreamer(new RefCoreTransientStreamer(ep));
-      } else {
-        st->setProductGetter(ep);
+        TClass *cl = gROOT->GetClass("edm::RefCore::RefCoreTransients");
+        RefCoreTransientStreamer *st = static_cast<RefCoreTransientStreamer *>(cl->GetStreamer());
+        if (st == 0) {
+          cl->AdoptStreamer(new RefCoreTransientStreamer(ep));
+        } else {
+          st->setProductGetter(ep);
+        }
       }
     }
     if (oldFormat) {

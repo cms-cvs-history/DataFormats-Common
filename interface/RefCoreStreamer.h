@@ -14,7 +14,6 @@ namespace edm {
     explicit RefCoreStreamer(EDProductGetter const* ep) : cl_("edm::RefCore"), prodGetter_(ep) {}
 
     void setProductGetter(EDProductGetter const* ep) {
-	assert(ep);
 	prodGetter_ = ep;
     }
     void operator() (TBuffer &R__b, void *objp);
@@ -29,7 +28,6 @@ namespace edm {
     explicit RefCoreTransientStreamer(EDProductGetter const* ep) : cl_("edm::RefCore::RefCoreTransients"), prodGetter_(ep) {}
 
     void setProductGetter(EDProductGetter const* ep) {
-	assert(ep);
 	prodGetter_ = ep;
     }
     void operator() (TBuffer &R__b, void *objp);
@@ -44,7 +42,6 @@ namespace edm {
     explicit ProductIDStreamer(EDProductGetter const* ep) : cl_("edm::ProductID"), prodGetter_(ep) {}
 
     void setProductGetter(EDProductGetter const* ep) {
-	assert(ep);
 	prodGetter_ = ep;
     }
     void operator() (TBuffer &R__b, void *objp);
@@ -54,7 +51,7 @@ namespace edm {
     EDProductGetter const* prodGetter_;
   };
 
-  void setRefCoreStreamer();
+  void resetRefCoreStreamer(bool oldFormat = false);
   void setRefCoreStreamer(EDProductGetter const* ep, bool oldFormat = false);
 } 
 #endif
