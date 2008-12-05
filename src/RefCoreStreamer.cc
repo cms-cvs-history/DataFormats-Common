@@ -1,26 +1,22 @@
-#include "DataFormats/Common/interface/RefCore.h"
 #include "DataFormats/Common/interface/RefCoreStreamer.h"
+#include "DataFormats/Common/interface/RefCore.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 #include "TROOT.h"
 #include <ostream>
-#include <limits>
 #include <cassert>
 
 namespace edm {
   void 
   ProductIDStreamer::operator()(TBuffer &R__b, void *objp) {
     if (R__b.IsReading()) {
-      if (oldFormat_) {
-        UInt_t i0, i1;
-        R__b.ReadVersion(&i0, &i1, cl_);
-        unsigned int id;
-        R__b >> id;
-	assert (id <= std::numeric_limits<unsigned short>::max());
-        ProductID* obj = static_cast<ProductID *>(objp);
-        *obj = ProductID(0, id);
-      } else {
-        cl_->ReadBuffer(R__b, objp);
-      }
+      UInt_t i0, i1;
+      R__b.ReadVersion(&i0, &i1, cl_);
+      unsigned int id;
+      R__b >> id;
+      ProductID pid;
+      pid.oldID() = id;
+      ProductID* obj = static_cast<ProductID *>(objp);
+      *obj = prodGetter_->oldToNewProductID(pid);
     } else {
       cl_->WriteBuffer(R__b, objp);
     }
@@ -78,7 +74,15 @@ namespace edm {
   }
 
   void setRefCoreStreamer(EDProductGetter const* ep, bool oldFormat) {
-    {
+    if (oldFormat) {
+      TClass *cl = gROOT->GetClass("edm::RefCore");
+      RefCoreStreamer *st = static_cast<RefCoreStreamer *>(cl->GetStreamer());
+      if (st == 0) {
+        cl->AdoptStreamer(new RefCoreStreamer(ep));
+      } else {
+        st->setProductGetter(ep);
+      }
+    } else {
       TClass *cl = gROOT->GetClass("edm::RefCore::RefCoreTransients");
       RefCoreTransientStreamer *st = static_cast<RefCoreTransientStreamer *>(cl->GetStreamer());
       if (st == 0) {
@@ -87,20 +91,13 @@ namespace edm {
         st->setProductGetter(ep);
       }
     }
-    {
-      TClass *cl = gROOT->GetClass("edm::RefCore");
-      RefCoreStreamer *st = static_cast<RefCoreStreamer *>(cl->GetStreamer());
-      if (st == 0) {
-        cl->AdoptStreamer(new RefCoreStreamer(ep));
-      } else {
-        st->setProductGetter(ep);
-      }
-    }
-    {
+    if (oldFormat) {
       TClass *cl = gROOT->GetClass("edm::ProductID");
       ProductIDStreamer *st = static_cast<ProductIDStreamer *>(cl->GetStreamer());
       if (st == 0) {
-        cl->AdoptStreamer(new ProductIDStreamer(oldFormat));
+        cl->AdoptStreamer(new ProductIDStreamer(ep));
+      } else {
+        st->setProductGetter(ep);
       }
     }
   }
