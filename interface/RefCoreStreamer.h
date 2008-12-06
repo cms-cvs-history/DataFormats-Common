@@ -51,7 +51,7 @@ namespace edm {
     EDProductGetter const* prodGetter_;
   };
 
-  void resetRefCoreStreamer(bool oldFormat = false);
+  void setRefCoreStreamer(bool oldFormat = false);
   void setRefCoreStreamer(EDProductGetter const* ep, bool oldFormat = false);
 } 
 #endif

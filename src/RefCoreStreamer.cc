@@ -52,7 +52,7 @@ namespace edm {
     }
   }
 
-  void resetRefCoreStreamer(bool oldFormat) {
+  void setRefCoreStreamer(bool oldFormat) {
     {
       TClass *cl = gROOT->GetClass("edm::RefCore::RefCoreTransients");
       RefCoreTransientStreamer *st = static_cast<RefCoreTransientStreamer *>(cl->GetStreamer());
