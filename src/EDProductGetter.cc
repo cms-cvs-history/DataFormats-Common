@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Nov  1 15:06:41 EST 2005
-// $Id: EDProductGetter.cc,v 1.4 2008/05/29 21:13:15 wmtan Exp $
+// $Id: EDProductGetter.cc,v 1.4.4.1 2008/12/05 03:32:23 wmtan Exp $
 //
 
 // system include files
@@ -96,7 +96,9 @@ namespace edm {
 
   ProductID
   EDProductGetter::oldToNewProductID_(ProductID const&) const {
-    throw 0; // QQQ
+    throw edm::Exception(errors::LogicError)
+        << "Internal error:  Call of oldToNewProductID_ for non-EventPrincipal.\n"
+        << "Please report this error to the Framework group\n";
   }
   
   EDProductGetter const*
