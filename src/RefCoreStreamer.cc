@@ -18,7 +18,7 @@ namespace edm {
       ProductID* obj = static_cast<ProductID *>(objp);
       *obj = (prodGetter_ ? prodGetter_->oldToNewProductID(pid) : pid);
     } else {
-      cl_->WriteBuffer(R__b, objp);
+      assert("ProductID streamer is obsolete" == 0);
     }
   }
 
@@ -64,6 +64,12 @@ namespace edm {
     }
     if (oldFormat) {
       TClass *cl = gROOT->GetClass("edm::RefCore");
+      if (cl->GetStreamer() != 0) {
+        cl->AdoptStreamer(0);
+      }
+    }
+    if (oldFormat) {
+      TClass *cl = gROOT->GetClass("edm::ProductID");
       if (cl->GetStreamer() != 0) {
         cl->AdoptStreamer(0);
       }
