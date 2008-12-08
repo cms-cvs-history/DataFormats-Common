@@ -16,7 +16,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Nov  1 15:06:31 EST 2005
-// $Id: EDProductGetter.h,v 1.6 2008/05/29 21:13:15 wmtan Exp $
+// $Id: EDProductGetter.h,v 1.6.4.1 2008/12/05 03:32:23 wmtan Exp $
 //
 
 // system include files
@@ -59,6 +59,7 @@ namespace edm {
       friend class Operate;
 
       ProductID oldToNewProductID(ProductID const& oldProductID) const {
+	if (oldProductID.oldID() == 0) return oldProductID;
 	return oldToNewProductID_(oldProductID);
       }
 private:
