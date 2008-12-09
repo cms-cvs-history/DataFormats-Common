@@ -27,12 +27,12 @@ If failedToGet() returns false but isValid() is also false then no attempt
 
 #include "DataFormats/Provenance/interface/BranchDescription.h"
 #include "DataFormats/Provenance/interface/ProductID.h"
+#include "DataFormats/Provenance/interface/ProductProvenance.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include <boost/shared_ptr.hpp>
 
 namespace edm {
   class EDProduct;
-  template <typename T>
   class OutputHandle {
   public:
     OutputHandle() :
@@ -49,7 +49,7 @@ namespace edm {
     OutputHandle(EDProduct const* prod, ConstBranchDescription const* desc, boost::shared_ptr<ProductProvenance> productProvenance) :
       wrap_(prod),
       desc_(desc),
-      productProvenance_(boost::shared_ptr<T>(new T(*productProvenance))) {}
+      productProvenance_(productProvenance) {}
 
     ///Used when the attempt to get the data failed
     OutputHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
@@ -91,11 +91,11 @@ namespace edm {
       return whyFailed_;
     }
 
-    T const* productProvenance() const {
+    ProductProvenance const* productProvenance() const {
       return productProvenance_.get();
     }
 
-    boost::shared_ptr<T> productProvenanceSharedPtr() const {
+    boost::shared_ptr<ProductProvenance> productProvenanceSharedPtr() const {
       return productProvenance_;
     }
 
@@ -106,15 +106,14 @@ namespace edm {
   private:
     EDProduct const* wrap_;
     ConstBranchDescription const* desc_;
-    boost::shared_ptr<T> productProvenance_;
+    boost::shared_ptr<ProductProvenance> productProvenance_;
     boost::shared_ptr<cms::Exception> whyFailed_;
   };
 
   // Free swap function
-  template <typename T>
   inline
   void
-  swap(OutputHandle<T>& a, OutputHandle<T>& b) {
+  swap(OutputHandle& a, OutputHandle& b) {
     a.swap(b);
   }
 }
