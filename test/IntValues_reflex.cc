@@ -8,7 +8,6 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Wed Oct 31 16:23:47 EDT 2007
-// $Id: IntValues_reflex.cc,v 1.2 2008/11/28 17:44:48 wmtan Exp $
 //
 
 // system include files
@@ -19,18 +18,17 @@
 #include "FWCore/Utilities/interface/UseReflex.h"
 
 namespace {
-  using namespace Reflex;
   using namespace test_with_reflex;
   //Need Reflex dicctionaries for the conversion
-  Type type_intvalue = TypeBuilder("IntValue");
-  Type type_intvalue2 = TypeBuilder("IntValue2");
+  Reflex::Type type_intvalue = Reflex::TypeBuilder("IntValue");
+  Reflex::Type type_intvalue2 = Reflex::TypeBuilder("IntValue2");
   
   void type_intvalue_d() {
-    ClassBuilder("IntValue", typeid(IntValue), sizeof(IntValue), PUBLIC, STRUCT);
+    Reflex::ClassBuilder("IntValue", typeid(IntValue), sizeof(IntValue), Reflex::PUBLIC, Reflex::STRUCT);
   }
   void type_intvalue2_d() {
-    ClassBuilder("IntValue2",typeid(IntValue2),sizeof(IntValue2),PUBLIC, STRUCT).
-    AddBase(type_intvalue,BaseOffset<IntValue,IntValue2>::Get(),PUBLIC);
+    Reflex::ClassBuilder("IntValue2",typeid(IntValue2),sizeof(IntValue2), Reflex::PUBLIC, Reflex::STRUCT).
+    AddBase(type_intvalue, Reflex::BaseOffset<IntValue,IntValue2>::Get(), Reflex::PUBLIC);
   }
   
   struct Dictionaries {

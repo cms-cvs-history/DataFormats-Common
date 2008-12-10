@@ -2,7 +2,6 @@
 #define DataFormats_Common_RefHolderBase_h
 /* \class edm::reftobase::Base
  *
- * $Id: RefHolderBase.h,v 1.11 2008/11/28 17:44:47 wmtan Exp $
  *
  */
 #include "Reflex/Type.h"
