@@ -52,7 +52,7 @@ namespace edm {
       productProvenance_(productProvenance) {}
 
     ///Used when the attempt to get the data failed
-    OutputHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
+    OutputHandle(boost::shared_ptr<cms::Exception> const& iWhyFailed):
       wrap_(0),
       desc_(0),
       productProvenance_(),

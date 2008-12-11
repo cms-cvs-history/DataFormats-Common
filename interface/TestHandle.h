@@ -3,7 +3,7 @@
 
 /*----------------------------------------------------------------------
 
-$Id: TestHandle.h,v 1.1 2008/03/18 12:48:31 wmtan Exp $
+$Id: TestHandle.h,v 1.1.4.1 2008/11/04 19:24:08 wmtan Exp $
 
 Version of Handle
 
@@ -24,7 +24,7 @@ namespace edm {
     // Default constructed handles are invalid.
     TestHandle();
 
-    TestHandle(const TestHandle<T>& h);
+    TestHandle(TestHandle<T> const& h);
 
     TestHandle(T const* prod, ProductID const& id);
 
@@ -32,7 +32,7 @@ namespace edm {
 
     void swap(TestHandle<T>& other);
 
-    TestHandle<T>& operator=(const TestHandle<T>& rhs);
+    TestHandle<T>& operator=(TestHandle<T> const& rhs);
 
     bool isValid() const;
 
@@ -54,7 +54,7 @@ namespace edm {
   { }
 
   template <class T>
-  TestHandle<T>::TestHandle(const TestHandle<T>& h) :
+  TestHandle<T>::TestHandle(TestHandle<T> const& h) :
     prod_(h.prod_),
     id_(h.id_)
   { }
@@ -79,7 +79,7 @@ namespace edm {
 
   template <class T>
   TestHandle<T>&
-  TestHandle<T>::operator=(const TestHandle<T>& rhs) {
+  TestHandle<T>::operator=(TestHandle<T> const& rhs) {
     TestHandle<T> temp(rhs);
     this->swap(temp);
     return *this;

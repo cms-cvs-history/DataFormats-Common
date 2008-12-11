@@ -45,13 +45,13 @@ namespace edm {
       id_(h.id_),
       whyFailed_(h.whyFailed_){}
 
-    BasicHandle(boost::shared_ptr<EDProduct const> prod, Provenance const* prov, ProductID const& id) :
-      product_(prod), prov_(prov), id_(id) {
+    BasicHandle(boost::shared_ptr<EDProduct const> prod, Provenance const* prov) :
+      product_(prod), prov_(prov), id_(prov->productID()) {
 
     }
 
     ///Used when the attempt to get the data failed
-    BasicHandle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
+    BasicHandle(boost::shared_ptr<cms::Exception> const& iWhyFailed):
     product_(),
     prov_(0),
     id_(),

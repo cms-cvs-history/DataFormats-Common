@@ -45,18 +45,18 @@ namespace edm
     // Default constructed handles are invalid.
     Handle();
 
-    Handle(const Handle<T>& h);
+    Handle(Handle<T> const& h);
 
-    Handle(T const* prod, Provenance const* prov, ProductID const& id);
+    Handle(T const* prod, Provenance const* prov);
     
-    Handle(const boost::shared_ptr<cms::Exception>&);
+    Handle(boost::shared_ptr<cms::Exception> const&);
 
     ~Handle();
 
     void swap(Handle<T>& other);
 
     
-    Handle<T>& operator=(const Handle<T>& rhs);
+    Handle<T>& operator=(Handle<T> const& rhs);
 
     bool isValid() const;
 
@@ -88,7 +88,7 @@ namespace edm
   { }
 
   template <class T>
-  Handle<T>::Handle(const Handle<T>& h) :
+  Handle<T>::Handle(Handle<T> const& h) :
     prod_(h.prod_),
     prov_(h.prov_),
     id_(h.id_),
@@ -96,17 +96,17 @@ namespace edm
   { }
 
   template <class T>
-  Handle<T>::Handle(T const* prod, Provenance const* prov, ProductID const& id) :
+  Handle<T>::Handle(T const* prod, Provenance const* prov) :
     prod_(prod),
     prov_(prov),
-    id_(id)
+    id_(prov->productID())
   { 
       assert(prod_);
       assert(prov_);
   }
 
   template <class T>
-    Handle<T>::Handle(const boost::shared_ptr<cms::Exception>& iWhyFailed):
+    Handle<T>::Handle(boost::shared_ptr<cms::Exception> const& iWhyFailed):
     prod_(0),
     prov_(0),
     id_(),
@@ -134,7 +134,7 @@ namespace edm
 
   template <class T>
   Handle<T>&
-  Handle<T>::operator=(const Handle<T>& rhs)
+  Handle<T>::operator=(Handle<T> const& rhs)
   {
     Handle<T> temp(rhs);
     this->swap(temp);
@@ -237,7 +237,7 @@ namespace edm
       << "edm::Wrapper converting from EDProduct to "
       << typeid(*originalWrap).name();
 
-    Handle<T> h(wrap->product(), orig.provenance(), orig.id());
+    Handle<T> h(wrap->product(), orig.provenance());
     h.swap(result);
   }
 
