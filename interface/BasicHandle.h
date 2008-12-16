@@ -36,17 +36,15 @@ namespace edm {
   public:
     BasicHandle() :
       product_(),
-      prov_(0),
-      id_() {}
+      prov_(0) {}
 
     BasicHandle(BasicHandle const& h) :
       product_(h.product_),
       prov_(h.prov_),
-      id_(h.id_),
       whyFailed_(h.whyFailed_){}
 
     BasicHandle(boost::shared_ptr<EDProduct const> prod, Provenance const* prov) :
-      product_(prod), prov_(prov), id_(prov->productID()) {
+      product_(prod), prov_(prov) {
 
     }
 
@@ -54,7 +52,6 @@ namespace edm {
     BasicHandle(boost::shared_ptr<cms::Exception> const& iWhyFailed):
     product_(),
     prov_(0),
-    id_(),
     whyFailed_(iWhyFailed) {}
     
     ~BasicHandle() {}
@@ -63,7 +60,6 @@ namespace edm {
       using std::swap;
       swap(product_, other.product_);
       std::swap(prov_, other.prov_);
-      std::swap(id_, other.id_);
       swap(whyFailed_,other.whyFailed_);
     }
 
@@ -95,7 +91,7 @@ namespace edm {
     }
 
     ProductID id() const {
-      return id_;
+      return prov_->productID();
     }
 
     boost::shared_ptr<cms::Exception> whyFailed() const {
@@ -104,7 +100,6 @@ namespace edm {
   private:
     boost::shared_ptr<EDProduct const> product_;
     Provenance const* prov_;
-    ProductID id_;
     boost::shared_ptr<cms::Exception> whyFailed_;
   };
 

@@ -76,30 +76,26 @@ namespace edm
   private:
     T const* prod_;
     Provenance const* prov_;    
-    ProductID id_;
     boost::shared_ptr<cms::Exception> whyFailed_;
   };
 
   template <class T>
   Handle<T>::Handle() :
     prod_(0),
-    prov_(0),
-    id_()
+    prov_(0)
   { }
 
   template <class T>
   Handle<T>::Handle(Handle<T> const& h) :
     prod_(h.prod_),
     prov_(h.prov_),
-    id_(h.id_),
     whyFailed_(h.whyFailed_)
   { }
 
   template <class T>
   Handle<T>::Handle(T const* prod, Provenance const* prov) :
     prod_(prod),
-    prov_(prov),
-    id_(prov->productID())
+    prov_(prov)
   { 
       assert(prod_);
       assert(prov_);
@@ -109,7 +105,6 @@ namespace edm
     Handle<T>::Handle(boost::shared_ptr<cms::Exception> const& iWhyFailed):
     prod_(0),
     prov_(0),
-    id_(),
     whyFailed_(iWhyFailed)
   { }
 
@@ -128,7 +123,6 @@ namespace edm
     using std::swap;
     std::swap(prod_, other.prod_);
     std::swap(prov_, other.prov_);
-    swap(id_, other.id_);
     swap(whyFailed_,other.whyFailed_);
   }
 
@@ -192,7 +186,7 @@ namespace edm
   ProductID 
   Handle<T>::id() const
   {
-    return id_;
+    return prov_->productID();
   }
 
   template <class T>
@@ -201,7 +195,6 @@ namespace edm
   {
     prod_ = 0;
     prov_ = 0;
-    id_ = ProductID();
     whyFailed_.reset();
   }
   //------------------------------------------------------------
