@@ -8,7 +8,6 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Wed Oct 31 16:23:47 EDT 2007
-// $Id: IntValues_reflex.cc,v 1.2 2008/11/28 17:44:48 wmtan Exp $
 //
 
 // system include files
