@@ -165,7 +165,7 @@ namespace edmNew {
     };
     friend class FastFiller;
 
-    struct FindForDetSetVector : public std::binary_function<const edmNew::DetSetVector<T>&, unsigned int, const T*> {
+    struct FindForDetSetVector : public std::binary_function<const edmNew::DetSetVector<T>&, size_t, const T*> {
         typedef FindForDetSetVector self;
         typename self::result_type operator()(typename self::first_argument_type iContainer, typename self::second_argument_type iIndex) {
             return &(iContainer.m_data[iIndex]);
@@ -443,7 +443,7 @@ namespace edm {
     /* Probably this one is not that useful .... */
     namespace refhelper {
         template<typename T>
-            struct FindSetForNewDetSetVector : public std::binary_function<const edmNew::DetSetVector<T>&, unsigned int, edmNew::DetSet<T> > {
+            struct FindSetForNewDetSetVector : public std::binary_function<const edmNew::DetSetVector<T>&, size_t, edmNew::DetSet<T> > {
                 typedef FindSetForNewDetSetVector<T> self;
                 typename self::result_type operator()(typename self::first_argument_type iContainer, typename self::second_argument_type iIndex) {
                     return &(iContainer[iIndex]);
