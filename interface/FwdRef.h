@@ -192,7 +192,7 @@ namespace edm {
 
 
     /// Accessor for product key.
-    key_type key() const {return ref_.isNonnull() ? ref_.item().key() : backRef_.item().key() ;}
+    key_type key() const {return ref_.isNonnull() ? ref_.key() : backRef_.key() ;}
 
     bool hasProductCache() const {return ref_.hasProductCache() || backRef_.hasProductCache();}
 
