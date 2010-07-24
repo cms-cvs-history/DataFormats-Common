@@ -15,7 +15,6 @@
 
 // user include files
 #include "DataFormats/Common/test/IntValues.h"
-#include "FWCore/Utilities/interface/UseReflex.h"
 
 namespace {
   using namespace test_with_reflex;
