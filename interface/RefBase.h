@@ -5,12 +5,14 @@
   
 RefBase: Base class for a single interproduct reference.
 
-$Id: RefBase.h,v 1.10 2007/10/18 10:38:24 chrjones Exp $
+$Id: RefBase.h,v 1.11 2008/02/15 05:57:03 wmtan Exp $
 
 ----------------------------------------------------------------------*/
 
 #include "DataFormats/Common/interface/EDProductfwd.h"
 #include "DataFormats/Common/interface/RefCore.h"
+#include "DataFormats/Common/interface/traits.h"
+#include "DataFormats/Common/interface/ConstPtrCache.h"
 
 namespace edm {
 
@@ -20,16 +22,16 @@ namespace edm {
     typedef KEY key_type;
 
     /// Default constructor needed for reading from persistent store. Not for direct use.
-    RefBase() : product_(), item_() {}
+    RefBase() : product_(), index_(key_traits<key_type>::value), cache_(0) {}
 
     /// General purpose constructor. 
     RefBase(ProductID const& productID, void const* prodPtr, key_type itemKey,
             void const* itemPtr, EDProductGetter const* prodGetter, bool transient):
-      product_(productID, prodPtr, prodGetter, transient), item_(itemKey, itemPtr) {}
+      product_(productID, prodPtr, prodGetter, transient), index_(itemKey),cache_(itemPtr) {}
 
     /// Constructor from RefVector. 
     RefBase(RefCore const& prod, RefItem<KEY> const& itm) :
-      product_(prod), item_(itm) {}
+      product_(prod), index_(itm.key()),cache_(itm.ptr()) {}
 
     /// Compiler-generated copy constructor, assignment operator, and
     /// destructor do the right thing.
@@ -38,20 +40,22 @@ namespace edm {
     RefCore const& refCore() const { return product_;}
 
     /// Accessor for index and pointer
-    RefItem<KEY> const& item() const {return item_;}
+    RefItem<KEY> item() const {return RefItem<KEY>(index_,cache_.ptr_);}
 
     // /// Return the index for the referenced element.
     // key_type key() const { return item_.key(); }
     
 
     /// Return true if this RefBase is non-null
-    bool isValid() const { return item_.isValid(); }
-    bool isNull() const { return item_.isNull(); }
-    bool isNonnull() const { return item_.isNonnull(); }
+    bool isValid() const { return index_!=edm::key_traits<key_type>::value; }
+    bool isNull() const { return !isValid(); }
+    bool isNonnull() const { return isValid(); }
 
   private:
     RefCore product_;
-    RefItem<KEY> item_;
+    //RefItem<KEY> item_;
+    key_type index_;
+    mutable ConstPtrCache cache_; //Type handles the transient
   };
 
   template <typename KEY>
