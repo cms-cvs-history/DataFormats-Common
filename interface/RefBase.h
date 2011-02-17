@@ -1,11 +1,12 @@
 #ifndef DataFormats_Common_RefBase_h
 #define DataFormats_Common_RefBase_h
 
+#error "This header should no longer be included"
 /*----------------------------------------------------------------------
   
 RefBase: Base class for a single interproduct reference.
 
-$Id: RefBase.h,v 1.11 2008/02/15 05:57:03 wmtan Exp $
+$Id: RefBase.h,v 1.11.6.1 2011/02/16 19:49:08 chrjones Exp $
 
 ----------------------------------------------------------------------*/
 
@@ -30,8 +31,8 @@ namespace edm {
       product_(productID, prodPtr, prodGetter, transient), index_(itemKey),cache_(itemPtr) {}
 
     /// Constructor from RefVector. 
-    RefBase(RefCore const& prod, RefItem<KEY> const& itm) :
-      product_(prod), index_(itm.key()),cache_(itm.ptr()) {}
+    RefBase(RefCore const& prod, KEY const& itm) :
+      product_(prod), index_(itm),cache_(0) {}
 
     /// Compiler-generated copy constructor, assignment operator, and
     /// destructor do the right thing.
@@ -40,10 +41,9 @@ namespace edm {
     RefCore const& refCore() const { return product_;}
 
     /// Accessor for index and pointer
-    RefItem<KEY> item() const {return RefItem<KEY>(index_,cache_.ptr_);}
 
     // /// Return the index for the referenced element.
-    // key_type key() const { return item_.key(); }
+     key_type key() const { return index_; }
     
 
     /// Return true if this RefBase is non-null
@@ -53,7 +53,6 @@ namespace edm {
 
   private:
     RefCore product_;
-    //RefItem<KEY> item_;
     key_type index_;
     mutable ConstPtrCache cache_; //Type handles the transient
   };
