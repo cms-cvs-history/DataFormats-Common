@@ -5,11 +5,10 @@
   
 RefItemGet: Free function to get pointer to a referenced item.
 
-$Id: RefItemGet.h,v 1.3 2007/08/20 13:50:16 chrjones Exp $
+$Id: RefItemGet.h,v 1.3.6.1 2011/02/16 19:49:08 chrjones Exp $
 
 ----------------------------------------------------------------------*/
 #include "DataFormats/Common/interface/RefCore.h"
-#include "DataFormats/Common/interface/RefItem.h"
 #include "DataFormats/Common/interface/RefCoreGet.h"
 
 namespace edm {
