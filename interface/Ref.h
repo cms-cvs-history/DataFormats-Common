@@ -117,7 +117,6 @@ Ref: A template for a interproduct reference to a member of a product_.
 #include "DataFormats/Common/interface/TestHandle.h"
 #include "DataFormats/Common/interface/OrphanHandle.h"
 #include "DataFormats/Common/interface/RefCore.h"
-#include "DataFormats/Common/interface/RefBase.h"
 #include "DataFormats/Common/interface/ConstPtrCache.h"
 
 BOOST_MPL_HAS_XXX_TRAIT_DEF(key_compare)
@@ -246,7 +245,6 @@ namespace edm {
     bool isNull() const {return !isNonnull(); }
 
     /// Checks for non-null
-    //bool isNonnull() const {return id().isValid(); }
     bool isNonnull() const { return index_!=edm::key_traits<key_type>::value; }
 
     /// Checks for null
@@ -288,12 +286,10 @@ namespace edm {
     }
   private:
     // Constructor from member of RefVector
-    Ref(RefCore const& refCore, RefItem<key_type> const& item) : 
-      product_(refCore), index_(item.key()) {
-        product_.mutableClientCache() = item.ptr();
+    Ref(RefCore const& refCore, key_type const& key) : 
+      product_(refCore), index_(key) {
     }
 
-    RefItem<key_type> item() const { return RefItem<key_type>(index_,product_.clientCache()); }
   private:
     // Compile time check that the argument is a C* or C const*
     // or derived from it.
