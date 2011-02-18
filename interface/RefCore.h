@@ -115,6 +115,7 @@ namespace edm {
     std::swap(productIndex_, other.productIndex_);
     std::swap(prodPtr_, other.prodPtr_);
     std::swap(prodGetter_, other.prodGetter_);
+    std::swap(clientCache_,other.clientCache_);
     std::swap(transient_.transient_, other.transient_.transient_);
   }
 
