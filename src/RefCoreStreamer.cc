@@ -53,7 +53,7 @@ namespace edm {
   RefCoreCheckTransientOnWriteStreamer::operator()(TBuffer &R__b, void *objp) {
     typedef RefCore::CheckTransientOnWrite CheckTransientOnWrite;
     if (R__b.IsReading()) {
-      std::cout <<"reading CheckTransientOnWrite"<<std::endl;
+      //std::cout <<"reading CheckTransientOnWrite"<<std::endl;
 #if 1
       Version_t version;
       R__b >> version;
@@ -61,7 +61,7 @@ namespace edm {
       R__b.ReadVersion();
 #endif
     } else {
-      std::cout <<"writing CheckTransientOnWrite"<<std::endl;
+      //std::cout <<"writing CheckTransientOnWrite"<<std::endl;
       TVirtualStreamerInfo* sinfo = cl_->GetStreamerInfo();
       CheckTransientOnWrite* obj = static_cast<CheckTransientOnWrite *>(objp);
       if (obj->transient_) {
