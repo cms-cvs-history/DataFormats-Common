@@ -1,7 +1,6 @@
 // Test of the ReflexTools functions.
 
 
-#include "DataFormats/Common/interface/RefVector.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "FWCore/Utilities/interface/ReflexTools.h"
 #include "Utilities/Testing/interface/CppUnit_testdriver.icpp"
