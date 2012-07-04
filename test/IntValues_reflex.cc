@@ -18,7 +18,7 @@
 
 namespace {
   using namespace test_with_reflex;
-  //Need Reflex dicctionaries for the conversion
+  //Need Reflex dictionaries for the conversion
   Reflex::Type type_intvalue = Reflex::TypeBuilder("IntValue");
   Reflex::Type type_intvalue2 = Reflex::TypeBuilder("IntValue2");
   

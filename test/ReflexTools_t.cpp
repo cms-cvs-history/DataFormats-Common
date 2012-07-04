@@ -3,6 +3,7 @@
 
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "FWCore/Utilities/interface/ReflexTools.h"
+#include "FWCore/Utilities/interface/TypeID.h"
 #include "Utilities/Testing/interface/CppUnit_testdriver.icpp"
 
 #include "cppunit/extensions/HelperMacros.h"
@@ -11,9 +12,6 @@
 #include <iostream>
 #include <typeinfo>
 #include <vector>
-
-using Reflex::Type;
-using Reflex::TypeTemplate;
 
 class TestReflex: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(TestReflex);
@@ -50,21 +48,21 @@ class TestReflex: public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE_REGISTRATION(TestReflex);
 
 void TestReflex::default_is_invalid() {
-  Type t;
+  edm::TypeID t;
   CPPUNIT_ASSERT(!t);
 }
 
 
 void TestReflex::no_dictionary_is_invalid() {
-  Type t(Type::ByName("ThereIsNoTypeWithThisName"));
+  edm::TypeID t(edm::TypeID::byName("ThereIsNoTypeWithThisName"));
   CPPUNIT_ASSERT(!t);
 }
 
 void TestReflex::find_nested() {
-  Type intvec(Type::ByName("std::vector<int>"));
+  edm::TypeID intvec(edm::TypeID::byName("std::vector<int>"));
   CPPUNIT_ASSERT(intvec);
 
-  Type found_type;
+  edm::TypeID found_type;
 
   CPPUNIT_ASSERT(edm::find_nested_type_named("const_iterator",
                                              intvec,
@@ -76,23 +74,24 @@ void TestReflex::find_nested() {
 }
 
 void TestReflex::burrowing() {
-  Type wrapper_type(Type::ByTypeInfo(typeid(edm::Wrapper<int>)));
+  edm::TypeID wrapper_type(edm::TypeID(typeid(edm::Wrapper<int>)));
   CPPUNIT_ASSERT(wrapper_type);
-  Type wrapped_type;
+  edm::TypeID wrapped_type;
   CPPUNIT_ASSERT(edm::find_nested_type_named("wrapped_type",
                                              wrapper_type,
                                              wrapped_type));
   CPPUNIT_ASSERT(wrapped_type);
-  CPPUNIT_ASSERT(!wrapped_type.IsTypedef());
-  CPPUNIT_ASSERT(wrapped_type.IsFundamental());
-  CPPUNIT_ASSERT(wrapped_type == Type::ByName("int"));
-  CPPUNIT_ASSERT(wrapped_type.TypeInfo() == typeid(int));
+  Reflex::Type wrapped_Rflx_type(Reflex::Type::ByTypeInfo(wrapped_type.typeInfo()));
+  CPPUNIT_ASSERT(!wrapped_Rflx_type.IsTypedef());
+  CPPUNIT_ASSERT(wrapped_Rflx_type.IsFundamental());
+  CPPUNIT_ASSERT(wrapped_type == edm::TypeID::byName("int"));
+  CPPUNIT_ASSERT(wrapped_type.typeInfo() == typeid(int));
 }
 
 void TestReflex::burrowing_failure() {
-  Type not_a_wrapper(Type::ByName("double"));
+  edm::TypeID not_a_wrapper(edm::TypeID::byName("double"));
   CPPUNIT_ASSERT(not_a_wrapper);
-  Type no_such_wrapped_type;
+  edm::TypeID no_such_wrapped_type;
   CPPUNIT_ASSERT(!no_such_wrapped_type);
   CPPUNIT_ASSERT(!edm::find_nested_type_named("wrapped_type",
                                               not_a_wrapper,
@@ -101,17 +100,18 @@ void TestReflex::burrowing_failure() {
 }
 
 void TestReflex::wrapper_type() {
-  Type wrapper_type(Type::ByTypeInfo(typeid(edm::Wrapper<int>)));
-  Type wrapped_type;
+  edm::TypeID wrapper_type(edm::TypeID(typeid(edm::Wrapper<int>)));
+  edm::TypeID wrapped_type;
   CPPUNIT_ASSERT(edm::wrapper_type_of(wrapper_type, wrapped_type));
-  CPPUNIT_ASSERT(!wrapped_type.IsTypedef());
-  CPPUNIT_ASSERT(wrapped_type == Type::ByName("int"));
+  Reflex::Type wrapped_Rflx_type(Reflex::Type::ByTypeInfo(wrapped_type.typeInfo()));
+  CPPUNIT_ASSERT(!wrapped_Rflx_type.IsTypedef());
+  CPPUNIT_ASSERT(wrapped_type == edm::TypeID::byName("int"));
 }
 
 void TestReflex::wrapper_type_failure() {
-  Type not_a_wrapper(Type::ByName("double"));
+  edm::TypeID not_a_wrapper(edm::TypeID::byName("double"));
   CPPUNIT_ASSERT(not_a_wrapper);
-  Type no_such_wrapped_type;
+  edm::TypeID no_such_wrapped_type;
   CPPUNIT_ASSERT(!no_such_wrapped_type);
   CPPUNIT_ASSERT(!edm::wrapper_type_of(not_a_wrapper,
                                        no_such_wrapped_type));
@@ -119,26 +119,26 @@ void TestReflex::wrapper_type_failure() {
 }
 
 void TestReflex::primary_template_id() {
-  Type intvec(Type::ByName("std::vector<int>"));
-  TypeTemplate vec(intvec.TemplateFamily());
+  Reflex::Type intvec(Reflex::Type::ByName("std::vector<int>"));
+  Reflex::TypeTemplate vec(intvec.TemplateFamily());
 
   // The template std::vector has two template parameters, thus the
   // '2' in the following line.
-  TypeTemplate standard_vec(TypeTemplate::ByName("std::vector",2));
+  Reflex::TypeTemplate standard_vec(Reflex::TypeTemplate::ByName("std::vector",2));
   CPPUNIT_ASSERT(!standard_vec);
   CPPUNIT_ASSERT(vec != standard_vec);
 
-  // Reflex in use by CMS as of 26 Feb 2007 understands vector to have
+  // reflex in use by CMS as of 26 Feb 2007 understands vector to have
   // one template parameter; this is not standard.
-  TypeTemplate nonstandard_vec(TypeTemplate::ByName("std::vector",1));
+  Reflex::TypeTemplate nonstandard_vec(Reflex::TypeTemplate::ByName("std::vector",1));
   CPPUNIT_ASSERT(nonstandard_vec);
   CPPUNIT_ASSERT(vec == nonstandard_vec);
 }
 
 void TestReflex::not_a_template_instance() {
-  Type not_a_template(Type::ByName("double"));
+  Reflex::Type not_a_template(Reflex::Type::ByName("double"));
   CPPUNIT_ASSERT(not_a_template);
-  TypeTemplate nonesuch(not_a_template.TemplateFamily());
+  Reflex::TypeTemplate nonesuch(not_a_template.TemplateFamily());
   CPPUNIT_ASSERT(!nonesuch);
 }
 
