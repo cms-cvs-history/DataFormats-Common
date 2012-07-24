@@ -15,7 +15,6 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Wed Oct 31 16:23:41 EDT 2007
-// $Id$
 //
 
 // system include files
@@ -24,7 +23,7 @@
 
 // forward declarations
 
-namespace test_with_reflex {
+namespace test_with_dictionaries {
   struct IntValue {
     int value_;
     IntValue(int iValue): value_(iValue) {}
